@@ -6,7 +6,7 @@ $("#over").css("left",w/2-$('#over').width()/2);
 $('h1').css("font-size",w/16+"px");
 $('button').css('width',w/16*9+'px');
 $("button").css("left",w/2-$('button').width()/2);
-$('button').css('width',$('button').width()+( -w/15));
+$('button').css('width',$('button').width()+( -w/11));
 var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
@@ -347,7 +347,7 @@ var keys = {};
    $('h1').css("font-size",w/16+"px");
    $('button').css('width',w/16*9+'px');
    $("button").css("left",w/2-$('button').width()/2);
-   $('button').css('width',$('button').width()+( -w/15));
+   $('button').css('width',$('button').width()+( -w/11));
 
    for(var i =0;i<enemies.length;i++){
      if(enemies[i].drawX+enemies[i].width>=w-10){
