@@ -40,7 +40,8 @@ h1{
 
 button{
   left:0;
-  top:300px;
+  top:100px;
+  position: :relative;
   border:3px black ridge;
   width:100%;
 }

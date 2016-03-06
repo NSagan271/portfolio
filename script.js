@@ -4,6 +4,7 @@ var w=$(window).width()-10;
 
 $("#over").css("left",w/2-$('#over').width()/2);
 $('h1').css("font-size",w/10+"px");
+$('button').css('margin-top',w/20+'px');
 var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
@@ -20,24 +21,7 @@ var over=false;
 var overAnim = false;
 var theme=0;
 
-$(window).resize(function(){
-  var hDiff= h- $(window).height()-10;
-  h = $(window).height()-10;
-  w=$(window).width()-10;
-  $("#over").css("left",w/2-$('#over').width()/2);
-  $('h1').css("font-size",w/15+"px");
-  $('canvas').width=w;
-  $('canvas').height=h;
-  for(var i =0;i<enemies.length;i++){
-    if(enemies[i].drawX+enemies[i].width>=w-10){
-      enemies[i].x=-enemies[i].width/2+w-10;
-      enemies[i].drawX=enemies[i].x-enemies[i].width/2;
-    }
-    if(character.x>=w)character.x=w-1;
-    water.height-=hDiff;
-  }
-  updateAll(over,themes,theme,character,enemies,water,overAnim);
-});
+
 
 function makeChar(x,y,xVel,w,colors,mainColor){
   return{
@@ -343,6 +327,49 @@ var keys = {};
 
   $("body").keyup(function(event){
     delete  keys[event.which];
+ });
+ $(window).resize(function(){
+   var move=false;
+   var ind=0;
+   var hDiff= h -$(window).height()+10;
+   h = $(window).height()-10;
+   w=$(window).width()-10;
+   $('canvas').remove();
+    canvas = document.createElement("canvas");
+   context = canvas.getContext("2d");
+     canvas.width = w;
+     canvas.height = h;
+     $('body').append(canvas);
+   $("#over").css("left",w/2-$('#over').width()/2);
+   $('h1').css("font-size",w/16+"px");
+   $('button').css('margin-top',w/20+'px');
+
+   for(var i =0;i<enemies.length;i++){
+     if(enemies[i].drawX+enemies[i].width>=w-10){
+       enemies[i].x=-enemies[i].width/2+w-10;
+       enemies[i].drawX=enemies[i].x-enemies[i].width/2;
+     }
+      enemies[i].y-=hDiff;
+     if(enemies[i].y<=200){
+       while(enemies[i]<enemies.length)delete enemies[i];
+       move=true;
+       ind=i-1;
+       i-=1;
+       break;
+
+     }
+   }
+   if(character.x+80>=w)character.x=w-90;
+   character.y-=hDiff;
+   character.floor-=hDiff;
+   if (move){
+     enemies[e.index+1]=makeEnemy(Math.random()*(w-300)+50,e.y-160,Math.random()*70+170,Math.random()*2.5+2,e.index+1);
+     moveDown=true;
+     moveDownTo=enemies[1].y;
+     character.y-=90;
+     character.x+=character.xVel*5;
+   }
+   updateAll(over,themes,theme,character,enemies,water,overAnim);
  });
 
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
