@@ -12,17 +12,20 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+ <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen">
 </head>
 <body>
+ <div type="button" id="sound"class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-volume-off"></span> </div>
   <h1 id="hide">gyroscope jump gyroscope jump game</h1>
   <div id="score">Score: 0</div>
   <div class="inst">WASD/ arrow keys; avoid being submerged in the red rising from the bottom (go ↑↑)</div>
   <div class="inst" id="bottom">appear on the other side→</div>
   <div id='over'>
     <h1 >GAME OVER</h1>
-  <button type="button" class="btn btn-secondary btn-lg btn-block">RETRY</button>
+  <button type="button" id="overbtn"class="btn btn-secondary btn-lg btn-block">RETRY</button>
   </div>
 </body>
 <script type="text/javascript" src="jquery-1.12.0.js"></script>

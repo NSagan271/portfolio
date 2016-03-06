@@ -12,6 +12,11 @@ h1{
   font-weight:bolder;
 
 }
+#sound{
+  right:15px;
+  top:5px;
+}
+
 #hide{
   position:absolute;
   visibility:hidden;

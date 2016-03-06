@@ -4,9 +4,9 @@ var w=$(window).width()-10;
 
 $("#over").css("left",w/2-$('#over').width()/2);
 $('h1').css("font-size",w/16+"px");
-$('button').css('width',w/16*9+'px');
-$("button").css("left",w/2-$('button').width()/2);
-$('button').css('width',$('button').width()+( -w/11));
+$('ovebtn').css('width',w/16*9+'px');
+$("overbtn").css("left",w/2-$('overbtn').width()/2);
+$('overbtn').css('width',$('overbtn').width()+( -w/11));
 var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
@@ -22,7 +22,8 @@ var score=0;
 var over=false;
 var overAnim = false;
 var theme=0;
-
+var playSound=true;
+var audio;
 
 
 function makeChar(x,y,xVel,w,colors,mainColor){
@@ -110,6 +111,10 @@ function move(c){
   }
   if (h-water.height<=c.y){
     over=true;
+    if(playSound){
+      audio = new Audio('sounds/die.mp3');
+      audio.play();
+    }
     overAnim=true;
     $("#over").css("visibility","visible");
     water.vel=6;
@@ -131,7 +136,7 @@ function moveEnemy(e,c){
     else{
       e.width-=(1+Math.abs(e.vel));
       e.drawX=e.x-e.width/2;
-      if (e.width<=e.widthTo)e.widthTo+=e.widthChange*2
+      if (e.width<=e.widthTo)e.widthTo+=e.widthChange*2;
     }
 
     if (e.x+e.width/2>=w-40){
@@ -180,6 +185,11 @@ function moveEnemy(e,c){
           $('#score').html("Score: "+score);
           if(e.index===0)$('.inst').css("visibility", "hidden");
           if(water.vel===0)water.vel=0.2;
+          if(playSound){
+            if(e.y>360) audio = new Audio('sounds/up.mp3');
+            else  audio = new Audio('sounds/newlev.mp3');
+            audio.play();
+          }
           enemies[e.index+1]=makeEnemy(Math.random()*(w-300)+50,e.y-160,Math.random()*70+170,Math.random()*2.5+2,e.index+1);
           if (w>1200)enemies[e.index-1].width+=(w-1200)/7.6;
           if(e.y<=360){
@@ -297,9 +307,9 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
   }
 }
 
-setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim)},31);
+setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
 
-$("button").click(function(){
+$("#overbtn").click(function(){
   over=false;
 
   $("#over").css("visibility","hidden");
@@ -345,9 +355,9 @@ var keys = {};
      $('body').append(canvas);
    $("#over").css("left",w/2-$('#over').width()/2);
    $('h1').css("font-size",w/16+"px");
-   $('button').css('width',w/16*9+'px');
-   $("button").css("left",w/2-$('button').width()/2);
-   $('button').css('width',$('button').width()+( -w/11));
+   $('overbtn').css('width',w/16*9+'px');
+   $("overbtn").css("left",w/2-$('overbtn').width()/2);
+   $('overbtn').css('width',$('overbtn').width()+( -w/11));
 
    for(var i =0;i<enemies.length;i++){
      if(enemies[i].drawX+enemies[i].width>=w-10){
@@ -375,6 +385,12 @@ var keys = {};
      character.x+=character.xVel*5;
    }
    updateAll(over,themes,theme,character,enemies,water,overAnim);
+ });
+
+ $('#sound').click(function(){
+  playSound=!playSound;
+  if(!playSound)$('#sound').html('<span class="glyphicon glyphicon-volume-up"></span>');
+  else $('#sound').html('<span class="glyphicon glyphicon-volume-off"></span>');
  });
 
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
