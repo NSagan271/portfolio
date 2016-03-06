@@ -10,6 +10,8 @@ h1{
   color:darkred;
   left:40%;
   font-weight:bolder;
+  -webkit-text-stroke-width: 3px;
+   -webkit-text-stroke-color: black;
 
 }
 #sound{

@@ -4,9 +4,9 @@ var w=$(window).width()-10;
 
 $("#over").css("left",w/2-$('#over').width()/2);
 $('h1').css("font-size",w/16+"px");
-$('ovebtn').css('width',w/16*9+'px');
-$("overbtn").css("left",w/2-$('button').width()/2);
-$('overbtn').css('width',$('button').width()+( -w/11));
+$('#ovebtn').css('width',w/16*9+'px');
+$("#overbtn").css("left",w/2-w/16*4.5);
+$('#overbtn').css('width',w/16*9+( -w/11));
 var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
@@ -377,8 +377,8 @@ var keys = {};
      }
      else if ($(window).width()-10<=1100)wDiff2=0;
      else{
-       if(w<=1100)wDiff2=1100-w;
-       else wDiff2=$(window).width()-10-w;
+       if(w<=1100)wDiff2=1100-$(window).width()+10;
+       else wDiff2=w-$(window).width()+10;
      }
    }
 
