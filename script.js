@@ -158,11 +158,11 @@ function moveEnemy(e,c){
             else  c.x+=10;
             if(c.t>0){
               c.y+=20;
-              c.x+=10;
+              c.x+=1;
             }
           }
-          if(c.x+88+c.xVel>=e.drawX+e.width){
-            c.x=e.drawX+e.width+Math.abs(c.xVel)*2-80-8;
+          if(c.x+80+c.xVel>=e.drawX+e.width){
+            c.x=e.drawX+e.width-Math.abs(c.xVel)*2-80-8;
             if(e.width<e.widthTo&&e.vel>0) c.x-=(1+e.vel);
             else if(e.width>e.widthTo&&e.vel<0)c.x-=(1+e.vel);
             else c.x-=10;
