@@ -1,8 +1,9 @@
 // noprotect
-var h = $(document).height()-10;
-var w=$(document).width()-10;
+var h = $(window).height()-10;
+var w=$(window).width()-10;
 
 $("#over").css("left",w/2-$('#over').width()/2);
+$('h1').css("font-size",w/10+"px");
 var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
@@ -19,6 +20,25 @@ var over=false;
 var overAnim = false;
 var theme=0;
 
+$(window).resize(function(){
+  var hDiff= h- $(window).height()-10;
+  h = $(window).height()-10;
+  w=$(window).width()-10;
+  $("#over").css("left",w/2-$('#over').width()/2);
+  $('h1').css("font-size",w/15+"px");
+  $('canvas').width=w;
+  $('canvas').height=h;
+  for(var i =0;i<enemies.length;i++){
+    if(enemies[i].drawX+enemies[i].width>=w-10){
+      enemies[i].x=-enemies[i].width/2+w-10;
+      enemies[i].drawX=enemies[i].x-enemies[i].width/2;
+    }
+    if(character.x>=w)character.x=w-1;
+    water.height-=hDiff;
+  }
+  updateAll(over,themes,theme,character,enemies,water,overAnim);
+});
+
 function makeChar(x,y,xVel,w,colors,mainColor){
   return{
     x:x,
@@ -32,7 +52,7 @@ function makeChar(x,y,xVel,w,colors,mainColor){
     mainColor:mainColor,
     floor:h-80,
     xMult:1.1,
-    moveX:true
+    moveX:true,
   };
 }
 
@@ -125,7 +145,7 @@ function moveEnemy(e,c){
     else{
       e.width-=(1+Math.abs(e.vel));
       e.drawX=e.x-e.width/2;
-      if (e.width<=e.widthTo)e.widthTo+=e.widthChange*2;
+      if (e.width<=e.widthTo)e.widthTo+=e.widthChange*2
     }
 
     if (e.x+e.width/2>=w-40){
@@ -141,16 +161,24 @@ function moveEnemy(e,c){
 
       if(c.y+10<e.y&&c.y+70>e.y+10){
           if(c.x-3+c.xVel<=e.drawX+e.vel){
-            c.x=e.drawX+Math.abs(c.xVel)*2+0.1;
+            c.x=e.drawX+Math.abs(c.xVel)*2+8;
             if(e.width>e.widthTo&&e.vel>0) c.x+=(1+e.vel);
             else if(e.width<e.widthTo&&e.vel<0) c.x+=(1+e.vel);
-            else  c.x-=1;
+            else  c.x+=10;
+            if(c.t>0){
+              c.y+=20;
+              c.x+=10;
+            }
           }
           if(c.x+88+c.xVel>=e.drawX+e.width){
-            c.x=e.drawX+e.width+Math.abs(c.xVel)*2-80-0.1;
+            c.x=e.drawX+e.width+Math.abs(c.xVel)*2-80-8;
             if(e.width<e.widthTo&&e.vel>0) c.x-=(1+e.vel);
             else if(e.width>e.widthTo&&e.vel<0)c.x-=(1+e.vel);
-            else c.x+=1;
+            else c.x-=10;
+            if(c.t>0){
+              c.y+=20;
+              c.x-=10;
+            }
 
           }
       }
@@ -258,9 +286,7 @@ var enemies = [makeEnemy(100,h-160,200,2,0)];
 if (w>1200)enemies[0].width+=(w-1200)/7.9;
 var water = makeWater(0);
 
-
-setInterval(function(){
-
+function updateAll(over,themes,theme,character,enemies,water,overAnim){
   if (!over){
     context.fillStyle = themes[theme][0];
   context.fillRect(0,0,canvas.width, canvas.height);
@@ -283,9 +309,9 @@ setInterval(function(){
       drawEnemy(enemies[j-1]);
      }
   }
+}
 
-
-},31);
+setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim)},31);
 
 $("button").click(function(){
   over=false;
