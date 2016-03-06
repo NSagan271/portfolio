@@ -5,8 +5,8 @@ var w=$(window).width()-10;
 $("#over").css("left",w/2-$('#over').width()/2);
 $('h1').css("font-size",w/16+"px");
 $('ovebtn').css('width',w/16*9+'px');
-$("overbtn").css("left",w/2-$('overbtn').width()/2);
-$('overbtn').css('width',$('overbtn').width()+( -w/11));
+$("overbtn").css("left",w/2-$('button').width()/2);
+$('overbtn').css('width',$('button').width()+( -w/11));
 var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
@@ -345,8 +345,47 @@ var keys = {};
    var move=false;
    var ind=0;
    var hDiff= h -$(window).height()+10;
+   var wDiff=w-$(window).height()+10;
+   var wDiff2=wDiff;
+   if(w>1200){
+     if($(window).width()-10<1200)wDiff=w-1200;
+     else wDiff=w-$(window).width()+10;
+   }
+   else{
+     if($(window).width()-10<1200) wDiff=0;
+     else wDiff =w-$(window).width()+10;
+   }
+
+   if(w>$(window).width()-10){
+     if(w>=1485){
+       if($(window).width()-10>=1485)wDiff2=0;
+       else if($(window).width()-10<=1100)wDiff2=1485-1100;
+       else wDiff2=1485-$(window).width()+10;
+     }
+     else if (w<=1100)wDiff2=0;
+     else{
+       if($(window).width()-10<=1100)wDiff2=w-1100;
+       else wDiff2=w-$(window).width()+10;
+     }
+   }
+   else if (w==$(window).width()-10)wDiff2=0;
+   else{
+     if($(window).width()-10>=1485){
+       if(w>=1485)wDiff2=0;
+       else if(w<=1100)wDiff2=1100-1485;
+       else wDiff2=w-1485;
+     }
+     else if ($(window).width()-10<=1100)wDiff2=0;
+     else{
+       if(w<=1100)wDiff2=1100-w;
+       else wDiff2=$(window).width()-10-w;
+     }
+   }
+
    h = $(window).height()-10;
    w=$(window).width()-10;
+
+   character.xMult-=wDiff2/1100;
    $('canvas').remove();
     canvas = document.createElement("canvas");
    context = canvas.getContext("2d");
@@ -363,6 +402,8 @@ var keys = {};
      if(enemies[i].drawX+enemies[i].width>=w-10){
        enemies[i].x=-enemies[i].width/2+w-10;
        enemies[i].drawX=enemies[i].x-enemies[i].width/2;
+       enemies[i].width-=wDiff/1200;
+       enemies[i].widthTo-=wDiff/1200;
      }
       enemies[i].y-=hDiff;
      if(enemies[i].y<=200){
