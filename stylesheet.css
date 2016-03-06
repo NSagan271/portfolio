@@ -1,0 +1,45 @@
+div{
+  position:absolute;
+  top:20;
+  color:white;
+  font-weight:bolder;
+  font-size:25px;
+
+}
+#hide{
+  position:absolute;
+  visibility:hidden;
+}
+.inst{
+  font-size:17px;
+  width:50%;
+  right:80px;
+  text-align:right;
+  color:yellow;
+}
+#bottom{
+  bottom:80px;
+  right:50px;
+}
+
+#over{
+  position:absolute;
+  color:red;
+  top:20%;
+  visibility:hidden;
+
+}
+.over h1{
+  -webkit-text-fill-color: red;
+   -webkit-text-stroke-width: 3px;
+   -webkit-text-stroke-color: black;
+  font-size:70px;
+  left:40%;
+  font-weight:bolder;
+
+}
+button{
+  left:0;
+  border:3px black ridge;
+  width:100%;
+}
