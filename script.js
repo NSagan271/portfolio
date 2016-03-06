@@ -3,8 +3,10 @@ var h = $(window).height()-10;
 var w=$(window).width()-10;
 
 $("#over").css("left",w/2-$('#over').width()/2);
-$('h1').css("font-size",w/10+"px");
-$('button').css('margin-top',w/20+'px');
+$('h1').css("font-size",w/16+"px");
+$('button').css('width',w/16*9+'px');
+$("button").css("left",w/2-$('button').width()/2);
+$('button').css('width',$('button').width()+( -w/15));
 var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
@@ -302,6 +304,7 @@ $("button").click(function(){
 
   $("#over").css("visibility","hidden");
   $('.inst').css("visibility","visible");
+
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
   $('.inst').css('visibility','hidden');
 }
@@ -342,7 +345,9 @@ var keys = {};
      $('body').append(canvas);
    $("#over").css("left",w/2-$('#over').width()/2);
    $('h1').css("font-size",w/16+"px");
-   $('button').css('margin-top',w/20+'px');
+   $('button').css('width',w/16*9+'px');
+   $("button").css("left",w/2-$('button').width()/2);
+   $('button').css('width',$('button').width()+( -w/15));
 
    for(var i =0;i<enemies.length;i++){
      if(enemies[i].drawX+enemies[i].width>=w-10){

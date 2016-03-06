@@ -32,16 +32,15 @@ h1{
   position: absolute;
   color:red;
   top:20%;
-  visibility:hidden;
   width:90%;
   text-align:center;
+  visibility:hidden;
 
 }
 
 button{
   left:0;
-  top:100px;
-  position: :relative;
-  border:3px black ridge;
-  width:100%;
+  position:relative;
+  font-size:30px;
+  font-weight: bolder;
 }
