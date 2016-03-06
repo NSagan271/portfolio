@@ -394,9 +394,9 @@ var keys = {};
      $('body').append(canvas);
    $("#over").css("left",w/2-$('#over').width()/2);
    $('h1').css("font-size",w/16+"px");
-   $('overbtn').css('width',w/16*9+'px');
-   $("overbtn").css("left",w/2-$('overbtn').width()/2);
-   $('overbtn').css('width',$('overbtn').width()+( -w/11));
+   $('#overbtn').css('width',w/16*9+'px');
+   $("#overbtn").css("left",w/2-$('#overbtn').width()/2);
+   $('#overbtn').css('width',$('#overbtn').width()+( -w/11));
 
    for(var i =0;i<enemies.length;i++){
      if(enemies[i].drawX+enemies[i].width>=w-10){
