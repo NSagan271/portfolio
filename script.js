@@ -23,8 +23,12 @@ var over=false;
 var overAnim = false;
 var theme=0;
 var playSound=true;
-var audio;
-
+var die = new Audio('sounds/die.mp3');
+die.load();
+var newlev=new Audio('sounds/newlev.mp3');
+newlev.load();
+var up = new Audio('sounds/up.mp3');
+up.load();
 
 function makeChar(x,y,xVel,w,colors,mainColor){
   return{
@@ -112,8 +116,7 @@ function move(c){
   if (h-water.height<=c.y){
     over=true;
     if(playSound){
-      audio = new Audio('sounds/die.mp3');
-      audio.play();
+      die.play();
     }
     overAnim=true;
     $("#over").css("visibility","visible");
@@ -186,9 +189,8 @@ function moveEnemy(e,c){
           if(e.index===0)$('.inst').css("visibility", "hidden");
           if(water.vel===0)water.vel=0.2;
           if(playSound){
-            if(e.y>360) audio = new Audio('sounds/up.mp3');
-            else  audio = new Audio('sounds/newlev.mp3');
-            audio.play();
+            if(e.y>360) up.play();
+            else newlev.play();
           }
           enemies[e.index+1]=makeEnemy(Math.random()*(w-300)+50,e.y-160,Math.random()*70+170,Math.random()*2.5+2,e.index+1);
           if (w>1200)enemies[e.index-1].width+=(w-1200)/7.6;
@@ -426,6 +428,7 @@ var keys = {};
      character.x+=character.xVel*5;
    }
    updateAll(over,themes,theme,character,enemies,water,overAnim);
+
  });
 
  $('#sound').click(function(){
