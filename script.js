@@ -160,7 +160,6 @@ function moveEnemy(e,c){
             else if(e.width<e.widthTo&&e.vel<0) c.x+=(1+e.vel);
             else  c.x+=1;
             if(c.t>0){
-              c.y+=20;
               c.x+=10;
             }
           }
@@ -170,7 +169,6 @@ function moveEnemy(e,c){
             else if(e.width>e.widthTo&&e.vel<0)c.x-=(1+e.vel);
             else c.x-=1;
             if(c.t>0){
-              c.y+=20;
               c.x-=10;
             }
 
@@ -199,7 +197,7 @@ function moveEnemy(e,c){
             moveDown=true;
             moveDownTo=enemies[1].y;
             c.y-=90;
-            c.x+=c.xVel*5;
+            c.x+=c.xVel;
           }
         }
       }
