@@ -43,7 +43,7 @@ $(window).load(function(){
   $('body').append(canvas);
   setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
   setInterval(function(){
-    if(extras.tilt.now){
+    if(extras.tilt.now&&!paused){
       if(prevTilt!=0)context.translate(-w/2*prevTilt,-h/2*prevTilt);
       context.rotate(-prevTilt);
       if(prevTilt!=0)context.translate(w/2*prevTilt,h/2*prevTilt);
