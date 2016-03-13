@@ -11,7 +11,11 @@ var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
   canvas.height = h;
-  $('body').append(canvas);
+  var background= document.createElement('img');
+  background.src="img/back.png";
+
+
+  var levelSets=0;
 
 context.fillStyle = "black";
 context.fillRect(0,0,canvas.width, canvas.height);
@@ -30,6 +34,12 @@ newlev.load();
 var up = new Audio('sounds/up.mp3');
 up.load();
 
+$(window).load(function(){
+
+  $('body').append(canvas);
+  setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
+});
+
 function makeChar(x,y,xVel,w,colors,mainColor){
   return{
     x:x,
@@ -43,6 +53,7 @@ function makeChar(x,y,xVel,w,colors,mainColor){
     mainColor:mainColor,
     floor:h-80,
     xMult:1.1,
+    xPlus:0,
     moveX:true,
   };
 }
@@ -74,12 +85,12 @@ function move(c){
   if(!moveDown){
     if (keys[39] || keys[68]){
       c.xVel=Math.abs(c.xVel);
-      if(c.x+10<=w-80) c.x+=c.xVel*c.xMult;
+      if(c.x+10<=w-80) c.x+=(c.xVel*c.xMult+c.xPlus);
       else c.x=1;
     }
     if (keys[37] || keys[65]){
       c.xVel=-Math.abs(c.xVel);
-      if(c.x>=0) c.x+=c.xVel*c.xMult;
+      if(c.x>=0) c.x+=(c.xVel*c.xMult-c.xPlus);
       else c.x=w-81;
     }
     if((keys[38]||keys[87]||keys[32])&&!c.jumping&&c.y>=c.floor-1){
@@ -190,7 +201,30 @@ function moveEnemy(e,c){
             if(e.y>360) up.play();
             else newlev.play();
           }
-          enemies[e.index+1]=makeEnemy(Math.random()*(w-300)+50,e.y-160,Math.random()*70+170,Math.random()*2.5+2,e.index+1);
+
+          var newX;
+          var width=Math.random()*70+170;
+          var num;
+          if(w>e.width*3+100){
+            var gap1=e.x-e.width;
+            var gap2=e.x+e.width;
+            if(gap1<50){
+              num=w-gap2-50;
+              newX=Math.random()*num+gap2;
+            }
+            else if(gap2+150>w-50){
+              num=gap1-50;
+              newX=Math.random()*num+50;
+            }
+            else{
+              num=gap1+w-gap2-100;
+              newX=Math.random()*num+10;
+              if (newX>gap1)newX+=e.width*2;
+            }
+          }
+          else newX=Math.random()*(w-300)+50;
+
+          enemies[e.index+1]=makeEnemy(newX,e.y-160,width,Math.random()*2.5+2,e.index+1);
           if (w>1200)enemies[e.index-1].width+=(w-1200)/7.6;
           if(e.y<=360){
             theme=Math.floor(Math.random()*32);
@@ -215,8 +249,9 @@ function moveEnemy(e,c){
       enemies[0].index=0;
       enemies[1].index=1;
       c.y+=90;
-      water.vel+=0.08;
-      c.xMult+=0.02 ;
+     levelSets++;
+      water.vel+=(0.30/(2*Math.sqrt(levelSets)))*(h/900);
+      c.xPlus+=(0.30/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
     }
@@ -254,8 +289,14 @@ function draw(c){
 
 }
 function drawWater(wa){
-  context.fillStyle="hsla(0,100%,50%,0.5)";
-  context.fillRect(0,h-wa.height,w,h);
+  var val=50;
+  var i=0;
+  for(i= wa.height;i>-10;i-=5){
+    val=Math.random()*1+30;
+    context.fillStyle="hsla(0,100%,"+val+"%,0.5)";
+    context.fillRect(0,h-i,w,10.1);
+  }
+
   if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
   else if (moveDown)wa.height-=1;
   else{
@@ -266,9 +307,13 @@ function drawWater(wa){
 }
 
 function drawEnemy(e){
+  context.strokeStyle='black';
+  context.lineWidth=1.5;
+  context.strokeRect(0,e.y,e.drawX,10)
+  context.strokeRect(e.drawX+e.width,e.y,w,10);
   context.fillStyle = themes[theme][1];
-  context.fillRect(0,e.y,e.drawX,10);
-   context.fillRect(e.drawX+e.width,e.y,w,10);
+  context.fillRect(0,e.y+1.5,e.drawX,7);
+   context.fillRect(e.drawX+e.width,e.y+1.5,w,7);
 }
 
 var col = ['red','orangered','yellow','lime','aqua','fuchsia','red','orangered','yellow','lime','aqua','fuchsia'];
@@ -286,6 +331,11 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
   if (!over){
     context.fillStyle = themes[theme][0];
   context.fillRect(0,0,canvas.width, canvas.height);
+  for(var i=0;i<h;i+=1000){
+    for(var j=0;j<w;j+=1000){
+      context.drawImage(background,j,i,1000,1000);
+    }
+  }
 
     move(character);
     draw(character);
@@ -307,7 +357,7 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
   }
 }
 
-setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
+
 
 $("#overbtn").click(function(){
   over=false;
@@ -434,6 +484,13 @@ var keys = {};
   if(!playSound)$('#sound').html('<span class="glyphicon glyphicon-volume-up"></span>');
   else $('#sound').html('<span class="glyphicon glyphicon-volume-off"></span>');
  });
+ $('#rainbow').click(function(){character.colors=['red','orangered','yellow','lime','aqua','fuchsia','red','orangered','yellow','lime','aqua','fuchsia']; });
+ $('#gray').click(function(){character.colors=['white','darkslategrey','lightgrey','darkgrey','dimgrey','black','white','darkslategrey','lightgrey','darkgrey','dimgrey','black']; });
+ $('#red').click(function(){character.colors=['red','magenta','crimson','maroon','orangered','mediumvioletred','red','magenta','crimson','maroon','orangered','mediumvioletred']; });
+ $('#blue').click(function(){character.colors=['blue','aquamarine','navy','cyan','indigo','skyblue','blue','aquamarine','navy','cyan','indigo','skyblue']; });
+ $('#green').click(function(){character.colors=['green','lime','olive','lawngreen','forestgreen','limegreen','green','lime','olive','lawngreen','forestgreen','limegreen']; });
+ $('#light').click(function(){character.colors=['lightpink','lightsalmon','lemonchiffon','lightgreen','skyblue','lavender','lightpink','lightsalmon','lemonchiffon','lightgreen','skyblue','lavender']; });
+ $('#dark').click(function(){character.colors=['darkred','brown','darkgoldenrod','darkgreen','darkslategrey','darkmagenta','darkred','brown','darkgoldenrod','darkgreen','darkslategrey','darkmagenta']; });
 
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
   $('.inst').css('visibility','hidden');

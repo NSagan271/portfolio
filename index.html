@@ -14,11 +14,25 @@
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
- <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
   <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen">
 </head>
 <body>
  <div type="button" id="sound"class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-volume-off"></span> </div>
+ <div class="btn-group" id='char'>
+  <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Characters
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" id='rainbow'>Rainbow</a><br>
+    <a class="dropdown-item" id='gray'>Grayscale</a><br>
+    <a class="dropdown-item" id='red'>Red</a><br>
+    <a class="dropdown-item" id='green'>Green</a><br>
+    <a class="dropdown-item" id='blue'>Blue</a><br>
+    <a class="dropdown-item" id='light'>Pastel</a><br>
+    <a class="dropdown-item" id='dark'>Dark</a>
+  </div>
+</div>
   <h1 id="hide">gyroscope jump gyroscope jump game</h1>
   <div id="score">Score: 0</div>
   <div class="inst">WASD/ arrow keys; avoid being submerged in the red rising from the bottom (go ↑↑)</div>
@@ -29,6 +43,7 @@
   </div>
 </body>
 <script type="text/javascript" src="jquery-1.12.0.js"></script>
+<script type="text/javascript" src="bootstrap.js"></script>
 <script type="text/javascript" src="script.js"></script>
 
 </html>
