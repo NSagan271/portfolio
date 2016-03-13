@@ -16,6 +16,7 @@ var canvas = document.createElement("canvas");
 
 
   var levelSets=0;
+  var paused=false;
 
 context.fillStyle = "black";
 context.fillRect(0,0,canvas.width, canvas.height);
@@ -248,7 +249,7 @@ function moveEnemy(e,c){
       enemies[1].index=1;
       c.y+=90;
      levelSets++;
-      water.vel+=(0.30/(2*Math.sqrt(levelSets)))*(h/900);
+      water.vel+=(0.37/(2*Math.sqrt(levelSets)))*(h/900);
       c.xPlus+=(0.30/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
@@ -294,14 +295,16 @@ function drawWater(wa){
     context.fillStyle="hsla(0,100%,"+val+"%,0.5)";
     context.fillRect(0,h-i,w,10.1);
   }
+ if(!paused){
+   if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
+   else if (moveDown)wa.height-=1;
+   else{
+     c=null;
+     enemies=[];
+     overAnim=false;
+   }
+ }
 
-  if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
-  else if (moveDown)wa.height-=1;
-  else{
-    c=null;
-    enemies=[];
-    overAnim=false;
-  }
 }
 
 function drawEnemy(e){
@@ -335,10 +338,10 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
     }
   }
 
-    move(character);
+    if(!paused)move(character);
     draw(character);
     for(var i=enemies.length;i>0;i--){
-      moveEnemy(enemies[i-1],character);
+      if(!paused)moveEnemy(enemies[i-1],character);
       drawEnemy(enemies[i-1]);
      }
 
@@ -481,6 +484,11 @@ var keys = {};
   playSound=!playSound;
   if(!playSound)$('#sound').html('<span class="glyphicon glyphicon-volume-up"></span>');
   else $('#sound').html('<span class="glyphicon glyphicon-volume-off"></span>');
+ });
+ $('#pause').click(function(){
+  paused=!paused;
+  if(!paused)$('#pause').html('<span class="glyphicon glyphicon-pause"></span>');
+  else $('#pause').html('<span class="glyphicon glyphicon-play"></span>');
  });
  $('#rainbow').click(function(){col=['red','orangered','yellow','lime','aqua','fuchsia','red','orangered','yellow','lime','aqua','fuchsia']; });
  $('#gray').click(function(){col=['white','darkslategrey','lightgrey','darkgrey','dimgrey','black','white','darkslategrey','lightgrey','darkgrey','dimgrey','black']; });
