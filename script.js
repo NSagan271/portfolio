@@ -35,10 +35,27 @@ newlev.load();
 var up = new Audio('sounds/up.mp3');
 up.load();
 
-$(window).load(function(){
+var tilt;
+var prevTilt;
+var extras={tilt:{now:false,next:true}};
 
+$(window).load(function(){
   $('body').append(canvas);
   setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
+  setInterval(function(){
+    if(extras.tilt.now){
+      if(prevTilt!=0)context.translate(-w/2*prevTilt,-h/2*prevTilt);
+      context.rotate(-prevTilt);
+      if(prevTilt!=0)context.translate(w/2*prevTilt,h/2*prevTilt);
+      tilt=Math.random()*Math.PI/10-Math.PI/20;
+      prevTilt=tilt;
+      if(tilt!=0)context.translate(-w/2*tilt,-h/2*tilt);
+      context.rotate(tilt);
+      if(tilt!=0)context.translate(w/2*tilt,h/2*tilt);
+
+      tilt=0;
+    }
+  },1500);
 });
 
 function makeChar(x,y,xVel,w){
@@ -195,7 +212,7 @@ function moveEnemy(e,c){
           score++;
           $('#score').html("Score: "+score);
           if(e.index===0)$('.inst').css("visibility", "hidden");
-          if(water.vel===0)water.vel=0.2;
+          if(water.vel===0)water.vel=0.375;
           if(playSound){
             if(e.y>360) up.play();
             else newlev.play();
@@ -224,6 +241,7 @@ function moveEnemy(e,c){
           else newX=Math.random()*(w-300)+50;
 
           enemies[e.index+1]=makeEnemy(newX,e.y-160,width,Math.random()*2.5+2,e.index+1);
+
           if (w>1200)enemies[e.index-1].width+=(w-1200)/7.6;
           if(e.y<=360){
             theme=Math.floor(Math.random()*32);
@@ -249,7 +267,7 @@ function moveEnemy(e,c){
       enemies[1].index=1;
       c.y+=90;
      levelSets++;
-      water.vel+=(0.325/(2*Math.sqrt(levelSets)))*(h/900);
+      water.vel+=(0.33/(2*Math.sqrt(levelSets)))*(h/900);
       c.xPlus+=(0.30/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
@@ -322,13 +340,39 @@ var themes = [['black','white'],['blueviolet','#B0E0E6 '], ['darkslategrey','cya
 
 var character=makeChar(0,h-80,6,w);
 character.xMult=w/1100;
-if(character.xMult<1)character.xMult=1;
+if(character.xMult<1.225)character.xMult=1.225;
 else if (character.xMult>1.35)character.xMult=1.35;
 var enemies = [makeEnemy(100,h-160,200,2,0)];
 if (w>1200)enemies[0].width+=(w-1200)/7.9;
 var water = makeWater(0);
 
 function updateAll(over,themes,theme,character,enemies,water,overAnim){
+  if(keys[49]&&keys[50]&&keys[55]){
+    if(extras.tilt.now!=extras.tilt.next&&!extras.tilt.now){
+      tilt=(Math.random()*Math.PI/10)-Math.PI/20;
+      prevTilt=tilt;
+    }
+    else tilt=0;
+    extras.tilt.now=extras.tilt.next;
+    if(extras.tilt.now){
+
+      if(tilt!=0)context.translate(-w/2*tilt,-h/2*tilt);
+      context.rotate(tilt);
+      if(tilt!=0)context.translate(w/2*tilt,h/2*tilt);
+      tilt=0;
+
+    }
+    else{
+      if(prevTilt!=0)context.translate(-w/2*prevTilt,-h/2*prevTilt);
+      context.rotate(-prevTilt);
+      if(prevTilt!=0)context.translate(w/2*prevTilt,h/2*prevTilt);
+
+      tilt=0;
+      prevTilt=0;
+
+    }
+  }
+  else if(extras.tilt.now==extras.tilt.next)extras.tilt.next=!extras.tilt.next;
   if (!over){
     context.fillStyle = themes[theme][0];
   context.fillRect(0,0,canvas.width, canvas.height);
@@ -371,7 +415,7 @@ $("#overbtn").click(function(){
 }
   character=makeChar(0,h-80,6,w);
   character.xMult=w/1100;
-if(character.xMult<1)character.xMult=1;
+if(character.xMult<1.225)character.xMult=1.225;
 else if (character.xMult>1.35)character.xMult=1.35;
   enemies = [makeEnemy(200,h-160,200,2.7,0)];
   if (w>1200)enemies[0].width+=(w-1200)/7;
