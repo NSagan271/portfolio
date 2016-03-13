@@ -40,7 +40,7 @@ $(window).load(function(){
   setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
 });
 
-function makeChar(x,y,xVel,w,colors,mainColor){
+function makeChar(x,y,xVel,w){
   return{
     x:x,
     y:y,
@@ -49,8 +49,6 @@ function makeChar(x,y,xVel,w,colors,mainColor){
     rotate:0,
     jumping:false,
     w:w,
-    colors:colors,
-    mainColor:mainColor,
     floor:h-80,
     xMult:1.1,
     xPlus:0,
@@ -272,7 +270,7 @@ function draw(c){
  context.fillStyle="black";
   context.lineWidth="3";
   for(var i = c.rotate; i<Math.PI*2-0.0001+c.rotate; i+=Math.PI/11 ){
-    context.strokeStyle = c.colors[Math.round((i-c.rotate)/Math.PI*6)];
+    context.strokeStyle = col[Math.round((i-c.rotate)/Math.PI*6)];
 
     for(var j = 35; j>0;j-=10){
 
@@ -319,7 +317,7 @@ function drawEnemy(e){
 var col = ['red','orangered','yellow','lime','aqua','fuchsia','red','orangered','yellow','lime','aqua','fuchsia'];
 var themes = [['black','white'],['blueviolet','#B0E0E6 '], ['darkslategrey','cyan'], ['midnightblue','deeppink'], ['maroon','whitesmoke'], ['darkslateblue','bisque'], ['navy','fuchsia'], ['dimgrey','lime'], ['#651a1a','lavender'], ['teal','palegreen'], ['lightgrey','black'], ['darkgreen','aliceblue'],['indigo','gold'],['orangered','moccasin'], ['khaki','crimson'],['turquoise','coral'],['pink','yellow'],['purple','gray'],['blue','yellow'],['teal','pink'],['cyan','purple'],['#2efa91','#864991'],['black','red'],['black','gold'],['silver','black'],['green','black'],['brown','orange'],['green','yellow'],['blue','orange'],['midnightblue','brick'],['#ff0080','lime'],['silver','blue']];
 
-var character=makeChar(0,h-80,6,w,col,'white');
+var character=makeChar(0,h-80,6,w);
 character.xMult=w/1100;
 if(character.xMult<1)character.xMult=1;
 else if (character.xMult>1.35)character.xMult=1.35;
@@ -368,7 +366,7 @@ $("#overbtn").click(function(){
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
   $('.inst').css('visibility','hidden');
 }
-  character=makeChar(0,h-80,6,w,col,'white');
+  character=makeChar(0,h-80,6,w);
   character.xMult=w/1100;
 if(character.xMult<1)character.xMult=1;
 else if (character.xMult>1.35)character.xMult=1.35;
@@ -484,13 +482,13 @@ var keys = {};
   if(!playSound)$('#sound').html('<span class="glyphicon glyphicon-volume-up"></span>');
   else $('#sound').html('<span class="glyphicon glyphicon-volume-off"></span>');
  });
- $('#rainbow').click(function(){character.colors=['red','orangered','yellow','lime','aqua','fuchsia','red','orangered','yellow','lime','aqua','fuchsia']; });
- $('#gray').click(function(){character.colors=['white','darkslategrey','lightgrey','darkgrey','dimgrey','black','white','darkslategrey','lightgrey','darkgrey','dimgrey','black']; });
- $('#red').click(function(){character.colors=['red','magenta','crimson','maroon','orangered','mediumvioletred','red','magenta','crimson','maroon','orangered','mediumvioletred']; });
- $('#blue').click(function(){character.colors=['blue','aquamarine','navy','cyan','indigo','skyblue','blue','aquamarine','navy','cyan','indigo','skyblue']; });
- $('#green').click(function(){character.colors=['green','lime','olive','lawngreen','forestgreen','limegreen','green','lime','olive','lawngreen','forestgreen','limegreen']; });
- $('#light').click(function(){character.colors=['lightpink','lightsalmon','lemonchiffon','lightgreen','skyblue','lavender','lightpink','lightsalmon','lemonchiffon','lightgreen','skyblue','lavender']; });
- $('#dark').click(function(){character.colors=['darkred','brown','darkgoldenrod','darkgreen','darkslategrey','darkmagenta','darkred','brown','darkgoldenrod','darkgreen','darkslategrey','darkmagenta']; });
+ $('#rainbow').click(function(){col=['red','orangered','yellow','lime','aqua','fuchsia','red','orangered','yellow','lime','aqua','fuchsia']; });
+ $('#gray').click(function(){col=['white','darkslategrey','lightgrey','darkgrey','dimgrey','black','white','darkslategrey','lightgrey','darkgrey','dimgrey','black']; });
+ $('#red').click(function(){col=['red','magenta','crimson','maroon','orangered','mediumvioletred','red','magenta','crimson','maroon','orangered','mediumvioletred']; });
+ $('#blue').click(function(){col=['blue','aquamarine','navy','cyan','indigo','skyblue','blue','aquamarine','navy','cyan','indigo','skyblue']; });
+ $('#green').click(function(){col=['green','lime','olive','lawngreen','forestgreen','limegreen','green','lime','olive','lawngreen','forestgreen','limegreen']; });
+ $('#light').click(function(){col=['lightpink','lightsalmon','lemonchiffon','lightgreen','skyblue','lavender','lightpink','lightsalmon','lemonchiffon','lightgreen','skyblue','lavender']; });
+ $('#dark').click(function(){col=['darkred','brown','darkgoldenrod','darkgreen','darkslategrey','darkmagenta','darkred','brown','darkgoldenrod','darkgreen','darkslategrey','darkmagenta']; });
 
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
   $('.inst').css('visibility','hidden');
