@@ -315,7 +315,8 @@ function drawWater(wa){
   }
  if(!paused){
    if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
-   else if(!moveDown){
+   else if(moveDown)wa.height-=wa.vel/35
+   else{
      c=null;
      enemies=[];
      overAnim=false;
