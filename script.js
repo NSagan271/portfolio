@@ -267,7 +267,7 @@ function moveEnemy(e,c){
       enemies[1].index=1;
       c.y+=90;
      levelSets++;
-      water.vel+=(0.335/(2*Math.sqrt(levelSets*4/5)))*(h/900);
+      water.vel+=(0.335/(2*Math.sqrt(levelSets*6/7)))*(h/900);
       c.xPlus+=(0.30/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
