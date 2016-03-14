@@ -347,15 +347,15 @@ if (w>1200)enemies[0].width+=(w-1200)/7.9;
 var water = makeWater(0);
 
 function updateAll(over,themes,theme,character,enemies,water,overAnim){
-  if(keys[49]&&keys[50]&&keys[55]){
+  if((keys[49]||keys[97])&&(keys[50]||keys[98])&&(keys[55]||keys[103])){
     if(extras.tilt.now!=extras.tilt.next&&!extras.tilt.now){
+
       tilt=(Math.random()*Math.PI/10)-Math.PI/20;
       prevTilt=tilt;
     }
     else tilt=0;
     extras.tilt.now=extras.tilt.next;
     if(extras.tilt.now){
-
       if(tilt!=0)context.translate(-w/2*tilt,-h/2*tilt);
       context.rotate(tilt);
       if(tilt!=0)context.translate(w/2*tilt,h/2*tilt);
