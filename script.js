@@ -212,7 +212,7 @@ function moveEnemy(e,c){
           score++;
           $('#score').html("Score: "+score);
           if(e.index===0)$('.inst').css("visibility", "hidden");
-          if(water.vel===0)water.vel=0.375;
+          if(water.vel===0)water.vel=0.385;
           if(playSound){
             if(e.y>360) up.play();
             else newlev.play();
@@ -267,7 +267,7 @@ function moveEnemy(e,c){
       enemies[1].index=1;
       c.y+=90;
      levelSets++;
-      water.vel+=(0.33/(2*Math.sqrt(levelSets)))*(h/900);
+      water.vel+=(0.335/(2*Math.sqrt(levelSets*4/5)))*(h/900);
       c.xPlus+=(0.30/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
@@ -315,8 +315,7 @@ function drawWater(wa){
   }
  if(!paused){
    if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
-   else if (moveDown)wa.height-=1;
-   else{
+   else if(!moveDown){
      c=null;
      enemies=[];
      overAnim=false;
@@ -347,7 +346,7 @@ if (w>1200)enemies[0].width+=(w-1200)/7.9;
 var water = makeWater(0);
 
 function updateAll(over,themes,theme,character,enemies,water,overAnim){
-  if((keys[49]||keys[97])&&(keys[50]||keys[98])&&(keys[55]||keys[103])){
+  if((keys[49]||keys[97])&&(keys[50]||keys[98])&&(keys[55]||keys[103])) {
     if(extras.tilt.now!=extras.tilt.next&&!extras.tilt.now){
 
       tilt=(Math.random()*Math.PI/10)-Math.PI/20;
