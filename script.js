@@ -17,6 +17,7 @@ var canvas = document.createElement("canvas");
 
   var levelSets=0;
   var paused=false;
+var highScore;
 
 context.fillStyle = "black";
 context.fillRect(0,0,canvas.width, canvas.height);
@@ -40,6 +41,9 @@ var prevTilt;
 var extras={tilt:{now:false,next:true}};
 
 $(window).load(function(){
+  highScore=setCookie('hScore','');
+  if(hScore==='')$('#hScore').text()="High Score: 0";
+  else $('#hScore').text()="High Score: "+hScore;
   $('body').append(canvas);
   setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
   setInterval(function(){
@@ -95,6 +99,24 @@ function makeWater(vel){
     height:0,
     vel:vel
   };
+}
+
+function setCookie(cname, cvalue) {
+    if(cvalue!=''){
+      document.cookie = cname + "=" + cvalue + "; " + expires;
+      return "";
+    }
+    else{
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+      }
+      return "";
+      }
+    
 }
 
 function move(c){
@@ -267,7 +289,7 @@ function moveEnemy(e,c){
       enemies[1].index=1;
       c.y+=90;
      levelSets++;
-      water.vel+=(0.335/(2*Math.sqrt(levelSets*6/7)))*(h/900);
+      water.vel+=(0.345/(2*Math.sqrt(levelSets*6/7)))*(h/900);
       c.xPlus+=(0.30/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
@@ -317,6 +339,11 @@ function drawWater(wa){
    if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
    else if(moveDown)wa.height-=wa.vel/35
    else{
+     if(Integer.parseInt(highScore)<score){
+       highScore=score;
+       setCookie('hScore',highScore);
+       $('#hScore').text()="High Score: "+hScore;
+     }
      c=null;
      enemies=[];
      overAnim=false;
