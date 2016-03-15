@@ -167,7 +167,11 @@ function move(c){
   }
   if (h-water.height<=c.y){
     over=true;
-    
+    if(highScore<score){
+       highScore=score;
+       setCookie('hScore',highScore);
+       $('#hScore').html("High Score: "+highScore);
+     }
     if(playSound){
       die.play();
     }
@@ -343,7 +347,6 @@ function drawWater(wa){
    if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
    else if(moveDown)wa.height-=wa.vel/35;
    else{
-     
      c=null;
      enemies=[];
      overAnim=false;
