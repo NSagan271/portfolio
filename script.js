@@ -342,7 +342,7 @@ function drawWater(wa){
    if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
    else if(moveDown)wa.height-=wa.vel/35;
    else{
-     if(Integer.parseInt(highScore)<score){
+     if(parseInt(highScore)<score){
        highScore=score;
        setCookie('hScore',highScore);
        $('#hScore').html("High Score: "+highScore);
