@@ -42,20 +42,20 @@ var extras={tilt:{now:false,next:true}};
 
 $(window).load(function(){
   highScore=setCookie('hScore','');
-  if(hScore==='')$('#hScore').text()="High Score: 0";
-  else $('#hScore').text()="High Score: "+hScore;
+  if(hScore==='')$('#hScore').html("High Score: 0");
+  else $('#hScore').html("High Score: "+hScore);
   $('body').append(canvas);
   setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
   setInterval(function(){
     if(extras.tilt.now&&!paused){
-      if(prevTilt!=0)context.translate(-w/2*prevTilt,-h/2*prevTilt);
+      if(prevTilt!==0)context.translate(-w/2*prevTilt,-h/2*prevTilt);
       context.rotate(-prevTilt);
-      if(prevTilt!=0)context.translate(w/2*prevTilt,h/2*prevTilt);
+      if(prevTilt!==0)context.translate(w/2*prevTilt,h/2*prevTilt);
       tilt=Math.random()*Math.PI/10-Math.PI/20;
       prevTilt=tilt;
-      if(tilt!=0)context.translate(-w/2*tilt,-h/2*tilt);
+      if(tilt!==0)context.translate(-w/2*tilt,-h/2*tilt);
       context.rotate(tilt);
-      if(tilt!=0)context.translate(w/2*tilt,h/2*tilt);
+      if(tilt!==0)context.translate(w/2*tilt,h/2*tilt);
 
       tilt=0;
     }
@@ -102,7 +102,7 @@ function makeWater(vel){
 }
 
 function setCookie(cname, cvalue) {
-    if(cvalue!=''){
+    if(cvalue!==''){
       document.cookie = cname + "=" + cvalue + "; " + expires;
       return "";
     }
@@ -112,7 +112,7 @@ function setCookie(cname, cvalue) {
       for(var i=0; i<ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+        if (c.indexOf(name) === 0) return c.substring(name.length,c.length);
       }
       return "";
       }
@@ -337,12 +337,12 @@ function drawWater(wa){
   }
  if(!paused){
    if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
-   else if(moveDown)wa.height-=wa.vel/35
+   else if(moveDown)wa.height-=wa.vel/35;
    else{
      if(Integer.parseInt(highScore)<score){
        highScore=score;
        setCookie('hScore',highScore);
-       $('#hScore').text()="High Score: "+hScore;
+       $('#hScore').html("High Score: "+hScore);
      }
      c=null;
      enemies=[];
@@ -355,7 +355,7 @@ function drawWater(wa){
 function drawEnemy(e){
   context.strokeStyle='black';
   context.lineWidth=1.5;
-  context.strokeRect(0,e.y,e.drawX,10)
+  context.strokeRect(0,e.y,e.drawX,10);
   context.strokeRect(e.drawX+e.width,e.y,w,10);
   context.fillStyle = themes[theme][1];
   context.fillRect(0,e.y+1.5,e.drawX,7);
@@ -383,16 +383,16 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
     else tilt=0;
     extras.tilt.now=extras.tilt.next;
     if(extras.tilt.now){
-      if(tilt!=0)context.translate(-w/2*tilt,-h/2*tilt);
+      if(tilt!==0)context.translate(-w/2*tilt,-h/2*tilt);
       context.rotate(tilt);
-      if(tilt!=0)context.translate(w/2*tilt,h/2*tilt);
+      if(tilt!==0)context.translate(w/2*tilt,h/2*tilt);
       tilt=0;
 
     }
     else{
-      if(prevTilt!=0)context.translate(-w/2*prevTilt,-h/2*prevTilt);
+      if(prevTilt!==0)context.translate(-w/2*prevTilt,-h/2*prevTilt);
       context.rotate(-prevTilt);
-      if(prevTilt!=0)context.translate(w/2*prevTilt,h/2*prevTilt);
+      if(prevTilt!==0)context.translate(w/2*prevTilt,h/2*prevTilt);
 
       tilt=0;
       prevTilt=0;
