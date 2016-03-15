@@ -15,8 +15,8 @@ var canvas = document.createElement("canvas");
   background.src="img/back.png";
 
 
-  var levelSets=0;
-  var paused=false;
+var levelSets=0;
+var paused=false;
 var highScore;
 
 context.fillStyle = "black";
@@ -342,7 +342,7 @@ function drawWater(wa){
      if(Integer.parseInt(highScore)<score){
        highScore=score;
        setCookie('hScore',highScore);
-       $('#hScore').html("High Score: "+hScore);
+       $('#hScore').html("High Score: "+highScore);
      }
      c=null;
      enemies=[];
