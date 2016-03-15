@@ -42,7 +42,10 @@ var extras={tilt:{now:false,next:true}};
 
 $(window).load(function(){
   highScore=setCookie('hScore','');
-  if(highScore==='')$('#hScore').html("High Score: 0");
+  if(highScore===''){
+    highScore=0;
+    $('#hScore').html("High Score: 0");
+  }
   else $('#hScore').html("High Score: "+highScore);
   $('body').append(canvas);
   setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
