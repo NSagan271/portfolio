@@ -167,11 +167,7 @@ function move(c){
   }
   if (h-water.height<=c.y){
     over=true;
-    if(highScore<score){
-       highScore=score;
-       setCookie('hScore',highScore);
-       $('#hScore').html("High Score: "+highScore);
-     }
+    
     if(playSound){
       die.play();
     }
