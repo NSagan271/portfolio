@@ -106,7 +106,7 @@ function makeWater(vel){
 
 function setCookie(cname, cvalue) {
     if(cvalue!==''){
-      document.cookie = cname + "=" + cvalue + "; " + expires;
+      document.cookie = cname + "=" + cvalue + "; ";
       return "";
     }
     else{
@@ -236,6 +236,11 @@ function moveEnemy(e,c){
         c.floor=e.y-80;
         if(enemies.length==e.index+1){
           score++;
+          if(parseInt(highScore)<score){
+            highScore=score;
+            setCookie('hScore',highScore);
+            $('#hScore').html('High Score: '+setCookie('hScore',''));
+          }
           $('#score').html("Score: "+score);
           if(e.index===0)$('.inst').css("visibility", "hidden");
           if(water.vel===0)water.vel=0.385;
