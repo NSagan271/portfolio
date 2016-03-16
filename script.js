@@ -1,32 +1,45 @@
 // noprotect
+
+//find window height and width
 var h = $(window).height()-10;
 var w=$(window).width()-10;
 
+//set button and text position
 $("#over").css("left",w/2-$('#over').width()/2);
 $('h1').css("font-size",w/16+"px");
 $('#ovebtn').css('width',w/16*9+'px');
 $("#overbtn").css("left",w/2-w/16*4.5);
 $('#overbtn').css('width',w/16*9+( -w/11));
+
+//canvas set-up
 var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
   canvas.height = h;
   var background= document.createElement('img');
   background.src="img/back.png";
+  context.fillStyle = "black";
+  context.fillRect(0,0,canvas.width, canvas.height);
 
-
+//variables
 var levelSets=0;
 var paused=false;
-var highScore;
+var highScore=0;
 
-context.fillStyle = "black";
-context.fillRect(0,0,canvas.width, canvas.height);
-var game_is_running=true;
+/*Everything moves down
+once the character reaches
+the top of the screen*/
 var moveDown=false;
 var moveDownTo;
+
 var score=0;
+
+//game over
 var over=false;
 var overAnim = false;
+var game_is_running=true;
+
+//audio/visual
 var theme=0;
 var playSound=true;
 var die = new Audio('sounds/die.mp3');
@@ -36,25 +49,35 @@ newlev.load();
 var up = new Audio('sounds/up.mp3');
 up.load();
 
+//easter egg: tilt screen
 var tilt;
 var prevTilt;
 var extras={tilt:{now:false,next:true}};
 
-$(window).load(function(){
+
+$(window).load(function(){//when window loads
+
+//load high score from cookie
   highScore=setCookie('hScore','');
   if(highScore===''){
     highScore=0;
     $('#hScore').html("High Score: 0");
   }
   else $('#hScore').html("High Score: "+highScore);
+  
+  //add canvas
   $('body').append(canvas);
   setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
+  
+  //tilt screen
   setInterval(function(){
     if(extras.tilt.now&&!paused){
       if(prevTilt!==0)context.translate(-w/2*prevTilt,-h/2*prevTilt);
-      context.rotate(-prevTilt);
-      if(prevTilt!==0)context.translate(w/2*prevTilt,h/2*prevTilt);
+      context.rotate(-prevTilt);   //return to regular rotation
+      if(prevTilt!==0)context.translate(w/2*prevTilt,h/2*prevTilt); 
       tilt=Math.random()*Math.PI/10-Math.PI/20;
+      
+      //rotate to a random position
       prevTilt=tilt;
       if(tilt!==0)context.translate(-w/2*tilt,-h/2*tilt);
       context.rotate(tilt);
@@ -65,23 +88,23 @@ $(window).load(function(){
   },1500);
 });
 
-function makeChar(x,y,xVel,w){
+function makeChar(x,y,xVel,w){//make a charactr object
   return{
     x:x,
     y:y,
     xVel:xVel,
-    t:0,
+    t:0,//used to determine y velocity: dy= d/dx(kt^2)*dx
     rotate:0,
     jumping:false,
     w:w,
     floor:h-80,
     xMult:1.1,
-    xPlus:0,
+    xPlus:0, //is added onto the x velocity 
     moveX:true,
   };
 }
 
-function makeEnemy(splitX,y,splitW,vel,index){
+function makeEnemy(splitX,y,splitW,vel,index){//make a hoizontal bar with an opening across the screen
  var a =Math.random()*25+25;
   if(splitX-splitW/2<10)splitX=splitW/2+10;
   if(splitX+splitW/2>w-10)splitX=-splitW/2+w-10;
