@@ -1,17 +1,17 @@
 // noprotect
 
-//find window height and width
+//find window height and width*****************************************
 var h = $(window).height()-10;
 var w=$(window).width()-10;
 
-//set button and text position
-$("#over").css("left",w/2-$('#over').width()/2);
-$('h1').css("font-size",w/16+"px");
-$('#ovebtn').css('width',w/16*9+'px');
+//set button and text position*****************************************
+$("#over").css("left",w/2-$('#over').width()/2); //centered
+$('h1').css("font-size",w/16+"px"); //text size
+$('#ovebtn').css('width',w/16*9+'px'); //button position
 $("#overbtn").css("left",w/2-w/16*4.5);
 $('#overbtn').css('width',w/16*9+( -w/11));
 
-//canvas set-up
+//canvas set-up*****************************************
 var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
   canvas.width = w;
@@ -19,25 +19,25 @@ var canvas = document.createElement("canvas");
   var background= document.createElement('img');
   background.src="img/back.png";
   context.fillStyle = "black";
-  context.fillRect(0,0,canvas.width, canvas.height);
+  context.fillRect(0,0,canvas.width, canvas.height); //black background
 
-//variables
-var levelSets=0;
+//variables*****************************************
+var levelSets=0; 
 var paused=false;
 var highScore=0;
+var score=0;
 
 /*Everything moves down
 once the character reaches
-the top of the screen*/
+the top of the screen******************************************/
 var moveDown=false;
 var moveDownTo;
 
-var score=0;
 
-//game over
+
+//game over****************************************
 var over=false;
-var overAnim = false;
-var game_is_running=true;
+var overAnim = false; //water filling the screen all the way
 
 //audio/visual
 var theme=0;
@@ -49,135 +49,127 @@ newlev.load();
 var up = new Audio('sounds/up.mp3');
 up.load();
 
-//easter egg: tilt screen
+//easter egg: tilt screen****************************************
 var tilt;
 var prevTilt;
-var extras={tilt:{now:false,next:true}};
+var extras={tilt:{now:false,next:true}}; //object allowing for multiple add-ons
 
 
 $(window).load(function(){//when window loads
 
-//load high score from cookie
-  highScore=setCookie('hScore','');
-  if(highScore===''){
-    highScore=0;
-    $('#hScore').html("High Score: 0");
+//load high score from cookie****************************************
+  highScore=getCookie('hScore'); //
+  if(highScore===''){//cookie not found
+    highScore=0; //default value is 0
+    $('#hScore').html("High Score: 0"); //update high score text 
   }
-  else $('#hScore').html("High Score: "+highScore);
+  else $('#hScore').html("High Score: "+highScore); //update high score text
   
-  //add canvas
+  //add canvas***************************************
   $('body').append(canvas);
-  setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31);
+  setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31); //game loop
   
-  //tilt screen
+  //tilt screen***************************************
   setInterval(function(){
-    if(extras.tilt.now&&!paused){
-      if(prevTilt!==0)context.translate(-w/2*prevTilt,-h/2*prevTilt);
-      context.rotate(-prevTilt);   //return to regular rotation
-      if(prevTilt!==0)context.translate(w/2*prevTilt,h/2*prevTilt); 
-      tilt=Math.random()*Math.PI/10-Math.PI/20;
+    if(extras.tilt.now&&!paused){ //set to tilt and game is not paused
+      if(prevTilt!==0)context.translate(-w/2*prevTilt,-h/2*prevTilt); //translated so that the canvas rotates around the center
+      context.rotate(-prevTilt);   //return to regular rotation; reverse previous rotation
+      if(prevTilt!==0)context.translate(w/2*prevTilt,h/2*prevTilt); //returning canvas to normal loaction
       
-      //rotate to a random position
-      prevTilt=tilt;
-      if(tilt!==0)context.translate(-w/2*tilt,-h/2*tilt);
-      context.rotate(tilt);
-      if(tilt!==0)context.translate(w/2*tilt,h/2*tilt);
-
-      tilt=0;
+      tilt=Math.random()*Math.PI/10-Math.PI/20; //rotate to a random position
+      prevTilt=tilt;//(prevTilt is set so that this rotation can be reversed)
+      if(tilt!==0)context.translate(-w/2*tilt,-h/2*tilt);//translated so that the canvas rotates around the center
+      context.rotate(tilt); //tilt canvas
+      if(tilt!==0)context.translate(w/2*tilt,h/2*tilt);//returning canvas to normal loaction
     }
   },1500);
 });
 
-function makeChar(x,y,xVel,w){//make a charactr object
-  return{
-    x:x,
+function makeChar(x,y,xVel,w){//make a character object**********************************************
+  return{ //returns the object
+    x:x, // x and y position
     y:y,
-    xVel:xVel,
-    t:0,//used to determine y velocity: dy= d/dx(kt^2)*dx
-    rotate:0,
-    jumping:false,
-    w:w,
-    floor:h-80,
-    xMult:1.1,
-    xPlus:0, //is added onto the x velocity 
-    moveX:true,
-  };
+    xVel:xVel, //x velocity
+    t:0,//used to determine y velocity: dy= d/dt(kt^2)*dx/dt
+    rotate:0, //the character consists of different colored circles aranged in a circle
+    //and their positions rotate
+    jumping:false, //not jumping
+    w:w, //width of character
+    floor:h-80, //the character has to stay above a certain y-value
+    xMult:1.1, //making the x-velocity faster w/o changing the jump height
+    xPlus:0, //is added onto the x velocity (increasing it at a constant rate)
+    };
 }
 
-function makeEnemy(splitX,y,splitW,vel,index){//make a hoizontal bar with an opening across the screen
- var a =Math.random()*25+25;
-  if(splitX-splitW/2<10)splitX=splitW/2+10;
+function makeEnemy(splitX,y,splitW,vel,index){//make a hoizontal bar with an opening across the screen****************************
+ var a =Math.random()*25+25; //the value to which the the width of the gap will change
+  if(splitX-splitW/2<10)splitX=splitW/2+10; //making sure that the gap is not off the screen
   if(splitX+splitW/2>w-10)splitX=-splitW/2+w-10;
   return{
-    x:splitX,
-    y:y,
-    width:splitW,
-    vel:vel,
-    index:index,
-    widthChange:a,
-    widthTo:splitW-a,
-    drawX:splitX-splitW/2,
+    x:splitX,//x position of gap
+    y:y, //y position of bar
+    width:splitW, //width of gap
+    vel:vel, //velocity of gap moving left and right
+    index:index, // the number of bars produced before 
+    widthChange:a, //the amount that the width of the gap can change from the set width
+    widthTo:splitW-a, //the target width
+    drawX:splitX-splitW/2, //the x value is halfway between the two edges of the gap. This is the left edge.
   };
 }
 
-function makeWater(vel){
+function makeWater(vel){ //the water/blood rising from the bottom of the screen****************************
   return{
     height:0,
-    vel:vel
+    vel:vel //the speed of the increase in height
   };
 }
 
-function setCookie(cname, cvalue) {
-    if(cvalue!==''){
+function setCookie(cname, cvalue) {//save a cookie****************************
       document.cookie = cname + "=" + cvalue + "; ";
       return "";
-    }
-    else{
+}
+function getCookie(cname){//retrieve a cookie****************************
       var name = cname + "=";
       var ca = document.cookie.split(';');
-      for(var i=0; i<ca.length; i++) {
+      for(var i=0; i<ca.length; i++) {//check for the given cookie name
         var c = ca[i];
         while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) === 0) return c.substring(name.length,c.length);
+        if (c.indexOf(name) === 0) return c.substring(name.length,c.length); // return cookie value
       }
-      return "";
-      }
-    
+      return "";//if the cookie doesn't exist
 }
+    
 
-function move(c){
+function move(c){//move the character****************************
   if(!moveDown){
-    if (keys[39] || keys[68]){
+    if (keys[39] || keys[68]){//moving right
       c.xVel=Math.abs(c.xVel);
       if(c.x+10<=w-80) c.x+=(c.xVel*c.xMult+c.xPlus);
-      else c.x=1;
+      else c.x=1; //appearing of the opposite side of the screen
     }
-    if (keys[37] || keys[65]){
+    if (keys[37] || keys[65]){//moving left
       c.xVel=-Math.abs(c.xVel);
       if(c.x>=0) c.x+=(c.xVel*c.xMult-c.xPlus);
-      else c.x=w-81;
+      else c.x=w-81; //appearing on the opposite side of the screen
     }
-    if((keys[38]||keys[87]||keys[32])&&!c.jumping&&c.y>=c.floor-1){
+    if((keys[38]||keys[87]||keys[32])&&!c.jumping&&c.y>=c.floor-1){ //jumping (if not already jumping)
       c.jumping=true;
-      c.t= -6;
+      c.t= -6; //see below (*!*!*)
     }
-    if(keys[40]||keys[83]){
+    if(keys[40]||keys[83]){//move down manually
       c.t+=0.4;
     }
 
-   if (c.jumping){
-     c.y+=Math.abs(c.xVel)*0.5*c.t;
-     c.t+=0.3;
-    }
-    if(c.y<=0){
-      c.t=Math.abs(c.t);
+   if (c.jumping){//jumping 
+     c.y+=Math.abs(c.xVel)*0.5*c.t;//*!*!*the velocity is basically d/dt of y = -x^2 where dx = xVel
+     c.t+=0.3; //increasing t to change the velocity
     }
 
-    if (c.y>=c.floor-1){
+    if (c.y>=c.floor-1){//prevent character from going through floor
       c.y=c.floor-1;
       c.jumping = false;
     }
-    else if (c.y<=c.floor-1){
+    else if (c.y<c.floor-1){
       if(!c.jumping){
         c.jumping=true;
         c.t=5;
@@ -321,7 +313,7 @@ function moveEnemy(e,c){
       enemies[1].index=1;
       c.y+=90;
      levelSets++;
-      water.vel+=(0.345/(2*Math.sqrt(levelSets*5/6)))*(h/900);
+      water.vel+=(0.345/(2*Math.sqrt(levelSets*7/8)))*(h/900);
       c.xPlus+=(0.30/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
