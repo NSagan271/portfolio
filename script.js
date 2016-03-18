@@ -98,6 +98,7 @@ function makeChar(x,y,xVel,w){//make a character object*************************
     floor:h-80, //the character has to stay above a certain y-value
     xMult:1.1, //making the x-velocity faster w/o changing the jump height
     xPlus:0, //is added onto the x velocity (increasing it at a constant rate)
+    xMo:0 //accounts for momentum when the character stops moving left and right 
     };
 }
 
@@ -152,6 +153,12 @@ function move(c){//move the character****************************
       if(c.x>=0) c.x+=(c.xVel*c.xMult-c.xPlus);
       else c.x=w-81; //appearing on the opposite side of the screen
     }
+    if (c.xMo !==0) {
+       c.x+=c.xMo;
+       c.xMo/=2;
+       if (Math.abs (c.xMo) <=0.1) c.xMo =0;
+    }
+
     if((keys[38]||keys[87]||keys[32])&&!c.jumping&&c.y>=c.floor-1){ //jumping (if not already jumping)
       c.jumping=true;
       c.t= -6; //see below (*!*!*)
@@ -254,7 +261,7 @@ function moveEnemy(e,c){
           if(parseInt(highScore)<score){
             highScore=score;
             setCookie('hScore',highScore);
-            $('#hScore').html('High Score: '+setCookie('hScore',''));
+            $('#hScore').html('High Score: ' + highScore);
           }
           $('#score').html("Score: "+score);
           if(e.index===0)$('.inst').css("visibility", "hidden");
@@ -477,10 +484,12 @@ var keys = {};
 
   $("body").keydown(function(event){
     keys[event.which] =true;
+    if (event.which == 39 || event.which ==68 || event.which == 37 || event.which ==65) character.xMo = character.xVel/2;
  });
 
   $("body").keyup(function(event){
     delete  keys[event.which];
+
  });
  $(window).resize(function(){
    var move=false;
