@@ -22,10 +22,13 @@ var canvas = document.createElement("canvas");
   context.fillRect(0,0,canvas.width, canvas.height); //black background
 
 //variables*****************************************
-var levelSets=0; 
+var levelSets=0;
 var paused=false;
 var highScore=0;
 var score=0;
+
+var deathByBomb;
+var explodeCount=20;
 
 /*Everything moves down
 once the character reaches
@@ -48,6 +51,8 @@ var newlev=new Audio('sounds/newlev.mp3');
 newlev.load();
 var up = new Audio('sounds/up.mp3');
 up.load();
+var explode = new Audio('sounds/explode.mp3');
+explode.load();
 
 //easter egg: tilt screen****************************************
 var tilt;
@@ -61,21 +66,21 @@ $(window).load(function(){//when window loads
   highScore=getCookie('hScore'); //
   if(highScore===''){//cookie not found
     highScore=0; //default value is 0
-    $('#hScore').html("High Score: 0"); //update high score text 
+    $('#hScore').html("High Score: 0"); //update high score text
   }
   else $('#hScore').html("High Score: "+highScore); //update high score text
-  
+
   //add canvas***************************************
   $('body').append(canvas);
   setInterval(function(){updateAll(over,themes,theme,character,enemies,water,overAnim);},31); //game loop
-  
+
   //tilt screen***************************************
   setInterval(function(){
     if(extras.tilt.now&&!paused){ //set to tilt and game is not paused
       if(prevTilt!==0)context.translate(-w/2*prevTilt,-h/2*prevTilt); //translated so that the canvas rotates around the center
       context.rotate(-prevTilt);   //return to regular rotation; reverse previous rotation
       if(prevTilt!==0)context.translate(w/2*prevTilt,h/2*prevTilt); //returning canvas to normal loaction
-      
+
       tilt=Math.random()*Math.PI/10-Math.PI/20; //rotate to a random position
       prevTilt=tilt;//(prevTilt is set so that this rotation can be reversed)
       if(tilt!==0)context.translate(-w/2*tilt,-h/2*tilt);//translated so that the canvas rotates around the center
@@ -98,7 +103,7 @@ function makeChar(x,y,xVel,w){//make a character object*************************
     floor:h-80, //the character has to stay above a certain y-value
     xMult:1.1, //making the x-velocity faster w/o changing the jump height
     xPlus:0, //is added onto the x velocity (increasing it at a constant rate)
-    xMo:0 //accounts for momentum when the character stops moving left and right 
+    xMo:0 //accounts for momentum when the character stops moving left and right
     };
 }
 
@@ -111,7 +116,7 @@ function makeEnemy(splitX,y,splitW,vel,index){//make a hoizontal bar with an ope
     y:y, //y position of bar
     width:splitW, //width of gap
     vel:vel, //velocity of gap moving left and right
-    index:index, // the number of bars produced before 
+    index:index, // the number of bars produced before
     widthChange:a, //the amount that the width of the gap can change from the set width
     widthTo:splitW-a, //the target width
     drawX:splitX-splitW/2, //the x value is halfway between the two edges of the gap. This is the left edge.
@@ -122,6 +127,19 @@ function makeWater(vel){ //the water/blood rising from the bottom of the screen*
   return{
     height:0,
     vel:vel //the speed of the increase in height
+  };
+}
+
+function makeBomb(x,y,yVel,xVel){
+  var bomb= document.createElement('img');
+  bomb.src="img/bomb.png";
+  return{
+    x:x,
+    y:y,
+    width:60,
+    img:bomb,
+    yVel:yVel,
+    xVel:xVel,
   };
 }
 
@@ -139,7 +157,7 @@ function getCookie(cname){//retrieve a cookie****************************
       }
       return "";//if the cookie doesn't exist
 }
-    
+
 
 function move(c){//move the character****************************
   if(!moveDown){
@@ -155,8 +173,8 @@ function move(c){//move the character****************************
     }
     if (c.xMo !==0) {
        c.x+=c.xMo;
-       c.xMo/=1.2;
-       if (Math.abs (c.xMo) <=0.1) c.xMo =0;
+       c.xMo/=1.3;
+       if (Math.abs (c.xMo) <=0.4) c.xMo =0;
     }
 
     if((keys[38]||keys[87]||keys[32])&&!c.jumping&&c.y>=c.floor-1){ //jumping (if not already jumping)
@@ -167,7 +185,7 @@ function move(c){//move the character****************************
       c.t+=0.4;
     }
 
-   if (c.jumping){//jumping 
+   if (c.jumping){//jumping
      c.y+=Math.abs(c.xVel)*0.5*c.t;//*!*!*the velocity is basically d/dt of y = -x^2 where dx = xVel
      c.t+=0.3; //increasing t to change the velocity
     }
@@ -189,7 +207,7 @@ function move(c){//move the character****************************
   }
   if (h-water.height<=c.y){
     over=true;
-    
+
     if(playSound){
       die.play();
     }
@@ -320,10 +338,15 @@ function moveEnemy(e,c){
       enemies[1].index=1;
       c.y+=90;
      levelSets++;
-      water.vel+=(0.345/(2*Math.sqrt(levelSets*7/8)))*(h/900);
+      water.vel+=(0.34/(2*Math.sqrt(levelSets*0.9)))*(h/900);
+      if(levelSets<3)water.vel+=(0.15/(2*Math.sqrt(levelSets*0.9)))*(h/900);
       c.xPlus+=(0.30/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
+      if(score>=10){
+        if((score-10)/10>=bombs.length)bombs[bombs.length]=(makeBomb(Math.random()*(w-50)+25,0,Math.random()*3+3,0));
+      }
+
     }
     else {
       e.y+=10;
@@ -338,16 +361,50 @@ function moveEnemy(e,c){
   }
 }
 
+function moveBomb(b,index){
+  if(!paused&&!moveDown&&!over){
+    b.y+=b.yVel;
+    b.x+=b.xVel;
+
+  }
+  else if(moveDown){
+    b.y+=10;
+  }
+  if(b.x<character.x+73&&b.x+b.width>character.x+7&&b.y+b.width>character.y+7&&b.y<character.y+73){
+    over=true;
+    deathByBomb=true;
+    if(playSound){
+      explode.play();
+    }
+  }
+  if(b.y>=h) bombs[index]=makeBomb(Math.random()*(w-50)+25,0,Math.random()*3+3,0);
+  drawBomb(b);
+}
+
 function draw(c){
  context.fillStyle="black";
   context.lineWidth="3";
   for(var i = c.rotate; i<Math.PI*2-0.0001+c.rotate; i+=Math.PI/11 ){
     context.strokeStyle = col[Math.round((i-c.rotate)/Math.PI*6)];
 
+    var times = 21 - explodeCount;
+    if(deathByBomb){
+      explodeCount--;
+      if (times>20){
+        overAnim=true;
+        deathByBomb=false;
+        bombs=[];
+        times=1;
+
+        $("#over").css("visibility","visible");
+        water.vel=6;
+      }
+    }
+
     for(var j = 35; j>0;j-=10){
 
        context.beginPath();
-      context.arc((c.x+40)-Math.cos(i-j/10)*j, (c.y+40)-Math.sin(i-j)*j, 5, 0, Math.PI*2, true);
+      context.arc((c.x+40)-Math.cos(i-j/10)*j*times, (c.y+40)-Math.sin(i-j)*j*times, 5, 0, Math.PI*2, true);
       context.closePath();
       context.stroke();
       context.fill();
@@ -387,6 +444,9 @@ function drawEnemy(e){
   context.fillRect(0,e.y+1.5,e.drawX,7);
    context.fillRect(e.drawX+e.width,e.y+1.5,w,7);
 }
+function drawBomb(b){
+  context.drawImage(b.img,b.x,b.y,b.width,b.width);
+}
 
 var col = ['red','orangered','yellow','lime','aqua','fuchsia','red','orangered','yellow','lime','aqua','fuchsia'];
 var themes = [['black','white'],['blueviolet','#B0E0E6 '], ['darkslategrey','cyan'], ['midnightblue','deeppink'], ['maroon','whitesmoke'], ['darkslateblue','bisque'], ['navy','fuchsia'], ['dimgrey','lime'], ['#651a1a','lavender'], ['teal','palegreen'], ['lightgrey','black'], ['darkgreen','aliceblue'],['indigo','gold'],['orangered','moccasin'], ['khaki','crimson'],['turquoise','coral'],['pink','yellow'],['purple','gray'],['blue','yellow'],['teal','pink'],['cyan','purple'],['#2efa91','#864991'],['black','red'],['black','gold'],['silver','black'],['green','black'],['brown','orange'],['green','yellow'],['blue','orange'],['midnightblue','brick'],['#ff0080','lime'],['silver','blue']];
@@ -398,6 +458,7 @@ else if (character.xMult>1.35)character.xMult=1.35;
 var enemies = [makeEnemy(100,h-160,200,2,0)];
 if (w>1200)enemies[0].width+=(w-1200)/7.9;
 var water = makeWater(0);
+var bombs=[];
 
 function updateAll(over,themes,theme,character,enemies,water,overAnim){
   if((keys[49]||keys[97])&&(keys[50]||keys[98])&&(keys[55]||keys[103])) {
@@ -443,6 +504,7 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
      }
 
     drawWater(water);
+    for (var i=0;i<bombs.length;i++)moveBomb(bombs[i],i);
 
   }
   else if (overAnim){
@@ -452,6 +514,10 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
     for(var j=enemies.length;j>0;j--){
       drawEnemy(enemies[j-1]);
      }
+  }
+  else if(deathByBomb){
+    draw(character);
+    for (var i=0;i<bombs.length;i++)drawBomb(bombs[i]);
   }
 }
 
@@ -484,7 +550,7 @@ var keys = {};
 
   $("body").keydown(function(event){
     keys[event.which] =true;
-    if (event.which == 39 || event.which ==68 || event.which == 37 || event.which ==65) character.xMo = character.xVel;
+    if (event.which == 39 || event.which ==68 || event.which == 37 || event.which ==65) character.xMo = character.xVel/2;
  });
 
   $("body").keyup(function(event){
