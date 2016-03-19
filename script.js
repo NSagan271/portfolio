@@ -155,7 +155,7 @@ function move(c){//move the character****************************
     }
     if (c.xMo !==0) {
        c.x+=c.xMo;
-       c.xMo/=2;
+       c.xMo/=1.2;
        if (Math.abs (c.xMo) <=0.1) c.xMo =0;
     }
 
@@ -484,7 +484,7 @@ var keys = {};
 
   $("body").keydown(function(event){
     keys[event.which] =true;
-    if (event.which == 39 || event.which ==68 || event.which == 37 || event.which ==65) character.xMo = character.xVel/2;
+    if (event.which == 39 || event.which ==68 || event.which == 37 || event.which ==65) character.xMo = character.xVel;
  });
 
   $("body").keyup(function(event){
