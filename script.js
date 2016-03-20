@@ -140,6 +140,7 @@ function makeBomb(x,y,yVel,xVel){
     img:bomb,
     yVel:yVel,
     xVel:xVel,
+    untilTurn:20
   };
 }
 
@@ -216,7 +217,8 @@ function move(c){//move the character****************************
     water.vel=6;
   }
 
-  c.rotate+=c.xVel/65;
+  if(c.xVel>0)c.rotate+=(c.xVel+c.xPlus)/65;
+  else c.rotate+=(c.xVel-c.xPlus)/65;
 
 
 }
@@ -338,13 +340,15 @@ function moveEnemy(e,c){
       enemies[1].index=1;
       c.y+=90;
      levelSets++;
-      water.vel+=(0.32/(2*Math.sqrt(levelSets*0.9)))*(h/900);
-      if(levelSets<3)water.vel+=(0.3/(2*Math.sqrt(levelSets)))*(h/900);
-      c.xPlus+=(0.30/(2*Math.sqrt(levelSets)))*(h/1000) ;
+     var bombXVel=0;
+     if(score>=35)bombXVel=Math.random()*3+3;
+      water.vel+=(0.28/(2*Math.sqrt(levelSets*0.95)))*(h/900);
+      if(levelSets<3)water.vel+=(0.25/(2*Math.sqrt(levelSets)))*(h/900);
+      c.xPlus+=(0.12/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
       if(score>=10){
-        if((score-10)/10>=bombs.length)bombs[bombs.length]=(makeBomb(Math.random()*(w-50)+25,0,Math.random()*3+3,0));
+        if((score-10)/12>=bombs.length)bombs[bombs.length]=makeBomb(Math.random()*(w-100)+25,0,Math.random()*3+3,bombXVel);
       }
 
     }
@@ -365,18 +369,36 @@ function moveBomb(b,index){
   if(!paused&&!moveDown&&!over){
     b.y+=b.yVel;
     b.x+=b.xVel;
-
+    if (b.x+b.width>=w-10||b.x<=10){
+      b.xVel*=-1;
+      b.x+=2*b.xVel;
+    }
+    if(b.xVel!==0){
+      b.untilTurn--;
+      if(b.untilTurn<=0){
+        b.xVel*=-1;
+        b.untilTurn = Math.random()*20+10;
+      }
+    }
+    if(b.x<character.x+73&&b.x+b.width>character.x+7&&b.y+b.width>character.y+7&&b.y<character.y+73){
+      over=true;
+      context.fillStyle = themes[theme][0];
+      context.fillRect(0,0,canvas.width, canvas.height);
+      for(var i=0;i<h;i+=1000){
+        for(var j=0;j<w;j+=1000){
+          context.drawImage(background,j,i,1000,1000);
+        }
+      }
+      deathByBomb=true;
+      if(playSound){
+        explode.play();
+      }
+    }
   }
   else if(moveDown){
     b.y+=10;
   }
-  if(b.x<character.x+73&&b.x+b.width>character.x+7&&b.y+b.width>character.y+7&&b.y<character.y+73){
-    over=true;
-    deathByBomb=true;
-    if(playSound){
-      explode.play();
-    }
-  }
+
   if(b.y>=h) bombs[index]=makeBomb(Math.random()*(w-50)+25,0,Math.random()*3+3,0);
   drawBomb(b);
 }
@@ -390,25 +412,32 @@ function draw(c){
     var times = 21 - explodeCount;
     if(deathByBomb){
       explodeCount--;
-      if (times>20){
-        overAnim=true;
-        deathByBomb=false;
-        bombs=[];
-        times=1;
 
-        $("#over").css("visibility","visible");
-        water.vel=6;
-      }
     }
 
     for(var j = 35; j>0;j-=10){
 
        context.beginPath();
       context.arc((c.x+40)-Math.cos(i-j/10)*j*times, (c.y+40)-Math.sin(i-j)*j*times, 5, 0, Math.PI*2, true);
+      if(times>1){
+        for (var i=1;i<times;i++){
+          context.arc((c.x+40)-Math.cos(i-j/10)*j*times, (c.y+40)-Math.sin(i-j)*j*times, 5, 0, Math.PI*2, true);
+        }
+      }
+
       context.closePath();
       context.stroke();
       context.fill();
 
+    }
+    if (times>=20){
+      overAnim=true;
+      over=true;
+      deathByBomb=false;
+      bombs=[];
+
+      $("#over").css("visibility","visible");
+      water.vel=6;
     }
 
   }
@@ -429,7 +458,10 @@ function drawWater(wa){
    else{
      c=null;
      enemies=[];
+     bombs=[];
+     water=null;
      overAnim=false;
+     over = true;
    }
  }
 
@@ -514,10 +546,16 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
     for(var j=enemies.length;j>0;j--){
       drawEnemy(enemies[j-1]);
      }
+     for (var i=0;i<bombs.length;i++)drawBomb(bombs[i]);
+
   }
   else if(deathByBomb){
     draw(character);
-    for (var i=0;i<bombs.length;i++)drawBomb(bombs[i]);
+
+    for(var j=enemies.length;j>0;j--){
+      drawEnemy(enemies[j-1]);
+     }
+     for (var i=0;i<bombs.length;i++)drawBomb(bombs[i]);
   }
 }
 
@@ -525,7 +563,8 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
 
 $("#overbtn").click(function(){
   over=false;
-
+  times=1;
+  explodeCount=20;
   $("#over").css("visibility","hidden");
   $('.inst').css("visibility","visible");
 
