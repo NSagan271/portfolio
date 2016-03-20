@@ -420,7 +420,7 @@ function draw(c){
        context.beginPath();
       context.arc((c.x+40)-Math.cos(i-j/10)*j*times, (c.y+40)-Math.sin(i-j)*j*times, 5, 0, Math.PI*2, true);
       if(times>1){
-        for (var i=1;i<times;i++){
+        for (i=1+c.rotate;i<times+c.rotate;i++){
           context.arc((c.x+40)-Math.cos(i-j/10)*j*times, (c.y+40)-Math.sin(i-j)*j*times, 5, 0, Math.PI*2, true);
         }
       }
@@ -467,8 +467,8 @@ function drawWater(wa){
    }
    else{
      c=null;
-     enemies=[];
-     bombs=[];
+     enemies=[null];
+     bombs=[null];
      water=null;
      overAnim=false;
      over = true;
@@ -552,19 +552,21 @@ function updateAll(over,themes,theme,character,enemies,water,overAnim){
   else if (overAnim){
 
     drawWater(water);
-    draw(character);
+
     for(var j=enemies.length;j>0;j--){
       drawEnemy(enemies[j-1]);
      }
+     draw(character);
      for (var i=0;i<bombs.length;i++)drawBomb(bombs[i]);
 
   }
   else if(deathByBomb){
-    draw(character);
+
 
     for(var j=enemies.length;j>0;j--){
       drawEnemy(enemies[j-1]);
      }
+     draw(character);
      for (var i=0;i<bombs.length;i++)drawBomb(bombs[i]);
   }
 }
@@ -575,6 +577,7 @@ $("#overbtn").click(function(){
   over=false;
   times=1;
   explodeCount=20;
+  bombs=[];
   $("#over").css("visibility","hidden");
   $('.inst').css("visibility","visible");
 
