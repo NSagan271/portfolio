@@ -447,14 +447,24 @@ function draw(c){
 function drawWater(wa){
   var val=50;
   var i=0;
-  for(i= wa.height;i>-10;i-=5){
-    val=Math.random()*1+30;
-    context.fillStyle="hsla(0,100%,"+val+"%,0.5)";
-    context.fillRect(0,h-i,w,10.1);
-  }
+
  if(!paused){
-   if (wa.height+wa.vel<h&&!moveDown)wa.height+=wa.vel;
-   else if(moveDown)wa.height-=wa.vel/35;
+   if (wa.height+wa.vel<h&&!moveDown){
+     wa.height+=wa.vel;
+     for(i= wa.height;i>-10;i-=5){
+       val=Math.random()*1+30;
+       context.fillStyle="hsla(0,100%,"+val+"%,0.5)";
+       context.fillRect(0,h-i,w,10.1);
+     }
+   }
+   else if(moveDown){
+     wa.height-=wa.vel/35;
+     for(i= wa.height;i>-10;i-=5){
+       val=Math.random()*1+30;
+       context.fillStyle="hsla(0,100%,"+val+"%,0.5)";
+       context.fillRect(0,h-i,w,10.1);
+     }
+   }
    else{
      c=null;
      enemies=[];
