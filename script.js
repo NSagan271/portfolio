@@ -341,14 +341,14 @@ function moveEnemy(e,c){
       c.y+=90;
      levelSets++;
      var bombXVel=0;
-     if(score>=25)bombXVel=Math.random()*3+3;
-      water.vel+=(0.27/(2*Math.sqrt(levelSets*0.95)))*(h/900);
+     if(score>=20)bombXVel=Math.random()*3+3;
+      water.vel+=(0.27/(2*Math.sqrt(levelSets)))*(h/900);
       if(levelSets<3)water.vel+=(0.25/(2*Math.sqrt(levelSets)))*(h/900);
       c.xPlus+=(0.18/(2*Math.sqrt(levelSets)))*(h/1000) ;
       if (water.height<=0)water.height=-water.vel* 20;
       c.floor=enemies[0].y-80;
       if(score>=5){
-        if((score-5)/12>=bombs.length)bombs[bombs.length]=makeBomb(Math.random()*(w-100)+25,0,Math.random()*3+3,bombXVel);
+        if((score-5)/(Math.floor(bombs.length*3))>=bombs.length)bombs[bombs.length]=makeBomb(Math.random()*(w-100)+25,0,Math.random()*3+3,bombXVel);
       }
 
     }
