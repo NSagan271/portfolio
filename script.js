@@ -136,7 +136,7 @@ function makeBomb(x,y,yVel,xVel){
   return{
     x:x,
     y:y,
-    width:60,
+    width:50,
     img:bomb,
     yVel:yVel,
     xVel:xVel,
@@ -341,7 +341,7 @@ function moveEnemy(e,c){
       c.y+=90;
      levelSets++;
      var bombXVel=0;
-     if(score>=35)bombXVel=Math.random()*3+3;
+     if(score>=25)bombXVel=Math.random()*3+3;
       water.vel+=(0.28/(2*Math.sqrt(levelSets*0.95)))*(h/900);
       if(levelSets<3)water.vel+=(0.25/(2*Math.sqrt(levelSets)))*(h/900);
       c.xPlus+=(0.12/(2*Math.sqrt(levelSets)))*(h/1000) ;
@@ -399,7 +399,7 @@ function moveBomb(b,index){
     b.y+=10;
   }
 
-  if(b.y>=h) bombs[index]=makeBomb(Math.random()*(w-50)+25,0,Math.random()*3+3,0);
+  if(b.y>=h) bombs[index]=makeBomb(Math.random()*(w-50)+25,0,b.yVel,b.xVel);
   drawBomb(b);
 }
 
