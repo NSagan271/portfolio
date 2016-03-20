@@ -593,6 +593,10 @@ else if (character.xMult>1.35)character.xMult=1.35;
 
 });
 
+$('#reset').click(function(){
+  setCookie('hScore',0);
+  $('#hScore').html('High Score: ' + 0);
+});
 
 
 var keys = {};
