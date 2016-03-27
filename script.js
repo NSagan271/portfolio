@@ -781,6 +781,11 @@ var keys = {};//key value object: stores key presses
 
 //mobile browser
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  jQuery(document).on("mobileinit", function() {
+    $.extend( $.mobile , {
+    autoInitializePage: false
+  });
+});
   jQuery.ajax({
         url: 'http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js',
         dataType: 'script',
