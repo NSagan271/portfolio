@@ -644,8 +644,8 @@ $("#overbtn").click(function(){//clicking RETRY button**************************
 
   //if on a mobile browser
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    $('#top').html('<br><br><br><br><br>tap on the top/bottom/left/right <br> of the screen to move');
-    $('#top').css('margin-left','40%');
+    $('#top').html('<br><br><br><br><br>swipe to move left/right and tap to jump');
+    $('#top').css({'width':'100%'},{'text-align':'left'});
 }
   character=makeChar(0,h-80,6,w);//new character
   character.xMult=w/1100;//adding to speed based on screen width
@@ -786,25 +786,18 @@ var keys = {};//key value object: stores key presses
 
 //mobile browser
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-  $('#top').html('<br><br><br><br><br>tap on the top/bottom/left/right <br> of the screen to move');
-  $('#top').css('margin-left','40%');
+  $('#top').html('<br><br><br><br><br>swipe to move left/right and tap to jump');
+  $('#top').css({'width':'100%'},{'text-align':'left'});
   //character motion
- $(document).click( function(event){//move by tapping on the screen--> update key object
-    if (event.pageY < h/2){//top half --> jumping
-       keys [38]=true;
-       delete keys [40];
-    }
-    if (event.pageY >= h/2){//bottom half--> going down
-       keys [40]=true;
-       delete keys [38];
-    }
-    if (event.pageX > w/2){//going right
-       keys [39]=true;
-       delete keys [37];
-    }
-    if ( event.pageX <= w/2){//going left
-       keys [37]=true;
-       delete keys [39];
-    }
- });
+ $('body').on('tap', function(){//tap to jump
+      character.jumping = true;
+  });
+  $('body').on('swiperight',function(){//swipe to go right
+    keys [39]=true;
+    delete keys [37];
+  });
+  $('body').on('swipeleft',function(){//swipe to go left
+    keys [37]=true;
+    delete keys [39];
+  });
 }
