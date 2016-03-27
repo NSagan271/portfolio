@@ -16,10 +16,23 @@ h1{
 }
 #score{
   left:60px;
+  -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: black;
+
 }
 #hScore{
   left:60px;
   top:35px;
+  -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: black;
+}
+#pauseInst{
+  font-size:20px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: deeppink;
+  -webkit-text-fill-color:yellow;
+   position:absolute;
+   top:50px;
 }
 #reset{
   left:260px;
@@ -40,11 +53,14 @@ h1{
   visibility:hidden;
 }
 .inst{
-  font-size:17px;
+  font-size:20px;
   width:50%;
   right:230px;
   text-align:right;
   color:yellow;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: deeppink;
+  -webkit-text-fill-color:yellow;
 }
 #bottom{
   bottom:80px;
