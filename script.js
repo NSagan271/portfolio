@@ -641,7 +641,7 @@ $("#overbtn").click(function(){//clicking RETRY button**************************
   bombs=[];
   $("#over").css("visibility","hidden");//hiding GAME OVER text
   $('.inst').css("visibility","visible");//showing instructions
-  
+
   character=makeChar(0,h-80,6,w);//new character
   character.xMult=w/1100;//adding to speed based on screen width
 if(character.xMult<1.225)character.xMult=1.225;
@@ -781,11 +781,19 @@ var keys = {};//key value object: stores key presses
 
 //mobile browser
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  jQuery.ajax({
+        url: 'http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js',
+        dataType: 'script',
+        success: function(){ $('ui-loader ui-corner-all ui-body-a ui-loader-default').remove();},
+        async: true
+    });
+
   $('#top').html('<br><br><br><br><br>swipe to move left/right and tap to jump');
-  $('#top').css({'width':'100%'},{'text-align':'left'},{'right':'0px'});
+  $('#top').css({'width':'100%'},{'text-align':'left'});
   //character motion
  $('body').on('tap', function(){//tap to jump
       character.jumping = true;
+      character.t=-6;
   });
   $('body').on('swiperight',function(){//swipe to go right
     keys [39]=true;
