@@ -797,7 +797,8 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
               if(!c.jumping&&c.y>=c.floor-1){
                 character.jumping = true;
                 character.t=-6;
-                
+              }
+
           });
           $('body').on('swiperight',function(){//swipe to go right
             keys [39]=true;
