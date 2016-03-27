@@ -784,7 +784,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
   jQuery.ajax({
         url: 'http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js',
         dataType: 'script',
-        success: function(){ $('ui-loader ui-corner-all ui-body-a ui-loader-default').remove();},
+        success: function(){},
         async: true
     });
 
