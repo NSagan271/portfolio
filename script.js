@@ -784,23 +784,25 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
   jQuery.ajax({
         url: 'http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js',
         dataType: 'script',
-        success: function(){},
+        success: function(){
+          $('#top').html('<br><br><br><br><br>swipe to move left/right and tap to jump');
+          $('#top').css({'width':'100%'},{'text-align':'left'});
+          //character motion
+         $('body').on('tap', function(){//tap to jump
+              character.jumping = true;
+              character.t=-6;
+          });
+          $('body').on('swiperight',function(){//swipe to go right
+            keys [39]=true;
+            delete keys [37];
+          });
+          $('body').on('swipeleft',function(){//swipe to go left
+            keys [37]=true;
+            delete keys [39];
+          });
+        },
         async: true
     });
 
-  $('#top').html('<br><br><br><br><br>swipe to move left/right and tap to jump');
-  $('#top').css({'width':'100%'},{'text-align':'left'});
-  //character motion
- $('body').on('tap', function(){//tap to jump
-      character.jumping = true;
-      character.t=-6;
-  });
-  $('body').on('swiperight',function(){//swipe to go right
-    keys [39]=true;
-    delete keys [37];
-  });
-  $('body').on('swipeleft',function(){//swipe to go left
-    keys [37]=true;
-    delete keys [39];
-  });
+
 }
