@@ -791,11 +791,13 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
         dataType: 'script',
         success: function(){
           $('#top').html('<br><br><br><br><br>swipe to move left/right and tap to jump');
-          $('#top').css({'width':'100%'},{'text-align':'left'});
+          $('#top').css({'width':'100%'},{'text-align':'left'},{'right','0'});
           //character motion
          $('body').on('tap', function(){//tap to jump
-              character.jumping = true;
-              character.t=-6;
+              if(!c.jumping&&c.y>=c.floor-1){
+                character.jumping = true;
+                character.t=-6;
+                
           });
           $('body').on('swiperight',function(){//swipe to go right
             keys [39]=true;
