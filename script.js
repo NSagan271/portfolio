@@ -794,7 +794,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
           $('#top').css({'width':'100%'},{'text-align':'left'},{'right','0'});
           //character motion
          $('body').on('tap', function(){//tap to jump
-              if(!c.jumping&&c.y>=c.floor-1){
+              if(!character.jumping&&character.y>=character.floor-1){
                 character.jumping = true;
                 character.t=-6;
               }
