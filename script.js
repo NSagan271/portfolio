@@ -641,12 +641,7 @@ $("#overbtn").click(function(){//clicking RETRY button**************************
   bombs=[];
   $("#over").css("visibility","hidden");//hiding GAME OVER text
   $('.inst').css("visibility","visible");//showing instructions
-
-  //if on a mobile browser
-  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    $('#top').html('<br><br><br><br><br>swipe to move left/right and tap to jump');
-    $('#top').css({'width':'100%'},{'text-align':'left'});
-}
+  
   character=makeChar(0,h-80,6,w);//new character
   character.xMult=w/1100;//adding to speed based on screen width
 if(character.xMult<1.225)character.xMult=1.225;
