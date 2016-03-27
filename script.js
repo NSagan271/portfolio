@@ -644,7 +644,8 @@ $("#overbtn").click(function(){//clicking RETRY button**************************
 
   //if on a mobile browser
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-  $('#top').html('tap on the <br>top/bottom/left/right <br> of the screen to move');
+    $('#top').html('<br><br><br><br><br>tap on the top/bottom/left/right <br> of the screen to move');
+    $('#top').css('width','100%');
 }
   character=makeChar(0,h-80,6,w);//new character
   character.xMult=w/1100;//adding to speed based on screen width
@@ -785,7 +786,8 @@ var keys = {};//key value object: stores key presses
 
 //mobile browser
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-  $('#top').html('<br><br><br><br>tap on the top/bottom/left/right <br> of the screen to move');
+  $('#top').html('<br><br><br><br><br>tap on the top/bottom/left/right <br> of the screen to move');
+  $('#top').css('width','100%');
   //character motion
  $(document).click( function(event){//move by tapping on the screen--> update key object
     if (event.pageY < h/2){//top half --> jumping
