@@ -785,9 +785,9 @@ var keys = {};//key value object: stores key presses
 
 //mobile browser
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-  $('#top').html('tap on the <br>top/bottom/left/right <br> of the screen to move');
+  $('#top').html('<br><br><br><br>tap on the top/bottom/left/right <br> of the screen to move');
   //character motion
- $('body').bind( "touchstart", function(event){//move by tapping on the screen--> update key object
+ $(document).click( function(event){//move by tapping on the screen--> update key object
     if (event.pageY < h/2){//top half --> jumping
        keys [38]=true;
        delete keys [40];
@@ -804,12 +804,5 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
        keys [37]=true;
        delete keys [39];
     }
- });
- $('body').bind( "touchend", function(event){//releasing
-   delete keys [37];
-   delete keys [39];
-   delete keys [40];
-   delete keys [38];
-
  });
 }
