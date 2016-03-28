@@ -791,7 +791,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
         dataType: 'script',
         success: function(){
           $('#top').html('<br><br><br><br><br>swipe to move left/right and tap to jump');
-          $('#top').css({'width':'100%'},{'text-align':'center'},{'right':'-230px'});
+          $('#top').css({'width':'100%'},{'text-align':'center'},{'margin-right':'-230px'});
           //character motion
          $('body').on('tap', function(){//tap to jump
               if(!character.jumping&&character.y>=character.floor-1){
