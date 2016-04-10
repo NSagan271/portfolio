@@ -84,7 +84,7 @@ $(window).load(function(){//when window loads
   //first bar/level
   enemies = [makeEnemy(100,h-160,200,2,0)];
   //increasing width of gap for wider screens
-  if (w>1200)enemies[0].width+=(w-1200)/7.9;
+  if (w>1200)enemies[0].width+=(w-1200)/15;
   else if(w<700){
     enemies[0].widthTo=50;
     enemies[0].widthChange=enemies[0].width/2-25;
@@ -324,7 +324,7 @@ function makeEnemy(splitX,y,splitW,vel,index){//make a hoizontal bar with an ope
               //on top of the gap for this level
               var newX;//x value of the new gameplay
               var width=Math.random()*70+170;//next gap width
-              if (w>1200)width+=(w-1200)/7.6;//increasing width for wider screens
+              if (w>1200)width+=(w-1200)/15;//increasing width for wider screens
               var num; //the number of positions the new bar can start from
               if(w>this.width*3+100){//enough space on the screen
                 var gap1=this.x-this.width;//left limit for the new gap
@@ -659,7 +659,7 @@ $("#overbtn").click(function(){//clicking RETRY button**************************
 if(character.xMult<1.225)character.xMult=1.225;
 else if (character.xMult>1.35)character.xMult=1.35;
   enemies = [makeEnemy(200,h-160,200,2.7,0)];//new bar/level
-  if (w>1200)enemies[0].width+=(w-1200)/7;//increasing gap width based on screen width
+  if (w>1200)enemies[0].width+=(w-1200)/15;//increasing gap width based on screen width
   else if(w<700){
     enemies[0].widthTo=50;
     enemies[0].widthChange=enemies[0].width/2-25;
