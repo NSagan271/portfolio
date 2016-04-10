@@ -87,7 +87,7 @@ $(window).load(function(){//when window loads
   if (w>1200)enemies[0].width+=(w-1200)/7.9;
   else if(w<700){
     enemies[0].widthTo=0;
-    enemies[0].widthChange=width;
+    enemies[0].widthChange=enemies[0].width/2;
   }
   water = makeWater(0);//water: velocity = 0
   bombs=[];//empty set (no bombs until level 6)
@@ -350,7 +350,7 @@ function makeEnemy(splitX,y,splitW,vel,index){//make a hoizontal bar with an ope
 
                if(w<700){
                 enemies[this.index+1].widthTo=0;
-                enemies[this.index+1].widthChange=width;
+                enemies[this.index+1].widthChange=width/2;
               }
               if(this.y<=360){//at the top of the screen
                 theme=Math.floor(Math.random()*32);//changing colors
@@ -661,8 +661,8 @@ else if (character.xMult>1.35)character.xMult=1.35;
   enemies = [makeEnemy(200,h-160,200,2.7,0)];//new bar/level
   if (w>1200)enemies[0].width+=(w-1200)/7;//increasing gap width based on screen width
   else if(w<700){
-    enemies[this.index+1].widthTo=0;
-    enemies[this.index+1].widthChange=width;
+    enemies[0].widthTo=0;
+    enemies[0].widthChange=enemies[0].width/2;
   }
   water = makeWater(0);
   score=0;//reset score
@@ -763,8 +763,8 @@ var keys = {};//key value object: stores key presses
      enemies[enemies.length]=makeEnemy(Math.random()*(w-300)+50,enemies[enemies.length-1].y-160,Math.random()*70+170,Math.random()*2.5+2,enemies.length);
 
       if(w<700){
-       enemies[enemies.length].widthTo=0;
-       enemies[enemies.length].widthChange=width;
+       enemies[enemies.length-1].widthTo=0;
+       enemies[enemies.length-1].widthChange=enemies[enemies.length-1].width/2;
      }
      moveDown=true;
      moveDownTo=enemies[1].y;
