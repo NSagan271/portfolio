@@ -16,18 +16,36 @@ body{
 #mission{
   background-image: url('res/mission.jpg');
 }
-#pro{
+.pro{
   background-image: url('res/pro.jpg');
+}
+#wks{
+  background-image: url('res/wks.jpg');
+}
+#swot{
+  background-image: url('res/swot.jpg');
 }
 #brand{
   margin-top:-5px;
 }
+.career{
+  background-image: url('res/career.jpg');
+}
+#market{
+  background-image: url('res/market.jpg');
+}
+#ethics{
+  background-image: url('res/ethics.jpg');
+}
+
 .main{
   background-color:rgba(255, 255, 255, 0.5);
   text-align:center;
   margin-top: 100px;
   width:70%;
   margin-left: 15%;
+  overflow:auto;
+  height:90%;
 }
 blockquote,.quote{
   text-align: left;
