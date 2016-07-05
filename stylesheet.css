@@ -76,7 +76,7 @@ h1,h3{
   border-radius: 5%;
 }
 #cov{
-  margin-top:-400px;
+  background-image:url('res/loading.gif');
 }
 .foot{
   position:absolute;
