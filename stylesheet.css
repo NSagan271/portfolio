@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Lobster);
 @import url(https://fonts.googleapis.com/css?family=Nunito);
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:200);
 html{
   height:100%;
 }
@@ -9,6 +10,7 @@ body{
   background-position: bottom;
   background-repeat: no-repeat;
   background-size:cover;
+  overflow-x:hidden;
 }
 #index{
   background-image: url('res/index.jpg');
@@ -49,10 +51,11 @@ body{
 .main{
   background-color:rgba(255, 255, 255, 0.5);
   text-align:center;
-  width:80%;
-  margin-left: 10%;
+  width:90%;
+  margin-left: 5%;
   overflow:auto;
-  height:95%;
+  height:85%;
+  position:absolute;
 }
 blockquote,.quote{
   text-align: left;
@@ -90,4 +93,20 @@ h1,h3{
   height:100%;
   border-radius:50%;
   border: 5px white solid;
+}
+.scroll{
+  height:40px;
+  font-size:25px;
+  color:rgba(200, 200, 200, 1);;
+  left:0px;
+  text-align:left;
+  white-space:nowrap;
+  font-family: "Source Code Pro";
+  font-weight:bold;
+  position:absolute;
+  background-color:rgba(50, 50, 50, .7);
+
+}
+#h{
+  padding:0;
 }
