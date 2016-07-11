@@ -74,9 +74,12 @@ h1,h3{
   margin-top:10px;
   height:300px;
 }
-.me,.me2{
+.me,.me2,.miss1{
   border: 10px double black;
   border-radius: 5%;
+}
+.miss1{
+  width:40%;
 }
 #cov{
   background-image:url('res/loading.gif');
