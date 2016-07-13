@@ -56,6 +56,8 @@ body{
   overflow:auto;
   height:85%;
   position:absolute;
+  border-radius: 1%;
+  border:5px lightgray ridge;
 }
 blockquote,.quote{
   text-align: left;
@@ -64,7 +66,7 @@ blockquote,.quote{
 #large{
   font-size:150%;
 }
-h1,h3{
+h1,h2,h3,h4{
   font-family:"Nunito";
 }
 .me{
@@ -74,9 +76,15 @@ h1,h3{
   margin-top:10px;
   height:300px;
 }
-.me,.me2,.miss1{
+.me,.me2,.miss1,.img{
   border: 10px double black;
   border-radius: 5%;
+}
+.img{
+  width:100%;
+  background-image:url('res/schoolpic.jpg');
+  background-size: contain;
+  background-repeat: repeat-y;
 }
 .miss1{
   width:40%;
@@ -100,7 +108,7 @@ h1,h3{
 .scroll{
   height:40px;
   font-size:25px;
-  color:rgba(200, 200, 200, 1);;
+  color:rgba(200, 200, 200, 1);
   left:0px;
   text-align:left;
   white-space:nowrap;
@@ -112,4 +120,27 @@ h1,h3{
 }
 #h{
   padding:0;
+}
+.w70p{
+  width:70%;
+}
+.w20p{
+  width:20%;
+  right:5%;
+  position:absolute;
+}
+.w100p{
+  width:100%;
+}
+.darkblu{
+  font-family:"Lobster";
+  color:darkslateblue;
+  font-size:120%;
+}
+#abt{
+  width:100%;
+}
+ul{
+  position:relative;
+  text-align:left;
 }
