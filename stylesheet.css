@@ -76,9 +76,15 @@ h1,h2,h3,h4{
   margin-top:10px;
   height:300px;
 }
-.me,.me2,.miss1,.img{
+.me,.me2,.miss1,.img,.cansat,.sensor{
   border: 10px double black;
   border-radius: 5%;
+}
+.sensor{
+  height:150px;
+}
+.cansat{
+  height:250px;
 }
 .img{
   width:100%;
@@ -143,4 +149,8 @@ h1,h2,h3,h4{
 ul{
   position:relative;
   text-align:left;
+
+}
+.bullet{
+    list-style-image: url('res/mouse.gif');
 }
