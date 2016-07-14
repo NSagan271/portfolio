@@ -49,7 +49,7 @@ body{
     background-image: url('res/mission.jpg');
 }
 .main{
-  background-color:rgba(255, 255, 255, 0.6);
+  background-color:rgba(255, 255, 255, 0.65);
   text-align:center;
   width:90%;
   margin-left: 5%;
@@ -77,7 +77,7 @@ h1,h2,h3,h4{
   height:300px;
 }
 .img{
-  border: 10px double black;
+  border: 5px ridge grey;
   border-radius: 5%;
 }
 #me3{
@@ -96,6 +96,9 @@ h1,h2,h3,h4{
 }
 #cov{
   background-image:url('res/loading.gif');
+}
+#dev{
+  height:400px;
 }
 .foot{
   position:absolute;
@@ -152,4 +155,7 @@ ul{
 }
 .bullet{
     list-style-image: url('res/mouse.gif');
+}
+button{
+  margin:10px;
 }
