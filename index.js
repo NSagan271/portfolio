@@ -16,7 +16,7 @@ $(window).load(function(){
   $(".scroll").css({"margin-top":$("nav").css("height"),"width":(len*15).toString()+"px"});
   $(".scroll").text(text);
   $('.w20p').css({"height":$(".w70p").css("height")});
-  $('.w20p').css("margin-top","-="+$(".w70p").css("height"));
+  $('.w20p').css("margin-top","-"+$(".w70p").css("height"));
   lastL = new Date-16;
   draw();
 });
@@ -30,7 +30,7 @@ $(window).resize(function(){
   $("body").css("height","-="+$("nav").css("height"));
   $(".scroll").css("margin-top",$("nav").css("height"));
   $('.w20p').css({"height":$(".w70p").css("height")});
-  $('.w20p').css("margin-top","-="+$(".w70p").css("height"));
+  $('.w20p').css("margin-top","-"+$(".w70p").css("height"));
 
 });
 
