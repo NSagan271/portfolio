@@ -49,7 +49,7 @@ body{
     background-image: url('res/mission.jpg');
 }
 .main{
-  background-color:rgba(255, 255, 255, 0.5);
+  background-color:rgba(255, 255, 255, 0.6);
   text-align:center;
   width:90%;
   margin-left: 5%;
@@ -69,30 +69,29 @@ blockquote,.quote{
 h1,h2,h3,h4{
   font-family:"Nunito";
 }
-.me{
+#me{
   height:400px;
 }
-.me2{
+#me2{
   margin-top:10px;
   height:300px;
 }
-.me,.me2,.miss1,.img,.cansat,.sensor{
+.img{
   border: 10px double black;
   border-radius: 5%;
 }
-.sensor{
-  height:150px;
-}
-.cansat{
-  height:250px;
-}
-.img{
-  width:100%;
+#me3{
   background-image:url('res/schoolpic.jpg');
   background-size: contain;
   background-repeat: repeat-y;
 }
-.miss1{
+#sensor{
+  height:150px;
+}
+#cansat{
+  height:250px;
+}
+#miss1{
   width:40%;
 }
 #cov{
