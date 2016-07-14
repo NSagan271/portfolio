@@ -29,7 +29,7 @@ $(window).resize(function(){
   $(".main").css("height","-="+$("nav").css("height"));
   $("body").css("height","-="+$("nav").css("height"));
   $(".scroll").css("margin-top",$("nav").css("height"));
-  $('.w20p').css("height",$(".w70p").css("height"));
+  $('.w20p').css({"height":$(".w70p").css("height")});
   $('.w20p').css("margin-top","-="+$(".w70p").css("height"));
 
 });
