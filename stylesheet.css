@@ -33,20 +33,11 @@ body{
 .career{
   background-image: url('res/career.jpg');
 }
-#market{
+#projects{
   background-image: url('res/market.jpg');
 }
 #ethics{
   background-image: url('res/ethics.jpg');
-}
-#contact{
-  background-image:url('res/contact.jpg');
-}
-#branding{
-  background-image: url('res/market.jpg');
-}
-#projects{
-    background-image: url('res/mission.jpg');
 }
 .main{
   background-color:rgba(255, 255, 255, 0.65);
@@ -81,9 +72,7 @@ h1,h2,h3,h4{
   border-radius: 5%;
 }
 #me3{
-  background-image:url('res/schoolpic.jpg');
-  background-size: contain;
-  background-repeat: repeat-y;
+  width:300px;
 }
 #sensor{
   height:150px;
@@ -129,17 +118,6 @@ h1,h2,h3,h4{
 #h{
   padding:0;
 }
-.w70p{
-  width:70%;
-}
-.w20p{
-  width:20%;
-  right:5%;
-  position:absolute;
-}
-.w100p{
-  width:100%;
-}
 .darkblu{
   font-family:"Lobster";
   color:darkslateblue;
@@ -158,4 +136,7 @@ ul{
 }
 button{
   margin:10px;
+}
+th{
+  text-align:center;
 }
